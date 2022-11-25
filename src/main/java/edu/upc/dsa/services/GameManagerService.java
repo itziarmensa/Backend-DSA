@@ -1,10 +1,9 @@
 package edu.upc.dsa.services;
 
-import edu.upc.dsa.models.Object;
-import edu.upc.dsa.utils.GameManager;
-import edu.upc.dsa.utils.GameManagerImpl;
-import edu.upc.dsa.models.*;
+import edu.upc.dsa.domain.GameManager;
+import edu.upc.dsa.domain.entity.Object;
 
+import edu.upc.dsa.infraestructure.GameManagerImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

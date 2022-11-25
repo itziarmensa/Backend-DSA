@@ -1,4 +1,4 @@
-package edu.upc.dsa.utils;
+package edu.upc.dsa;
 
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jersey.listing.ApiListingResourceJSON;

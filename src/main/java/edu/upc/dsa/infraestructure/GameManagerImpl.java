@@ -1,12 +1,13 @@
-package edu.upc.dsa.utils;
+package edu.upc.dsa.infraestructure;
 
-import edu.upc.dsa.models.Object;
+import edu.upc.dsa.domain.GameManager;
+import edu.upc.dsa.domain.entity.Object;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameManagerImpl implements GameManager{
+public class GameManagerImpl implements GameManager {
 
     private static GameManager instance;
 

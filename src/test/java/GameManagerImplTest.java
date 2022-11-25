@@ -1,7 +1,7 @@
 
 
-import edu.upc.dsa.models.Object;
-import edu.upc.dsa.utils.GameManager;
+import edu.upc.dsa.domain.entity.Object;
+import edu.upc.dsa.domain.GameManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

@@ -1,7 +1,6 @@
-package edu.upc.dsa.utils;
+package edu.upc.dsa.domain;
 
-import edu.upc.dsa.models.*;
-import edu.upc.dsa.models.Object;
+import edu.upc.dsa.domain.entity.Object;
 
 import java.util.List;
 

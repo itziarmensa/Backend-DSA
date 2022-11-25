@@ -1,4 +1,4 @@
-package edu.upc.dsa.utils;
+package edu.upc.dsa.domain.entity.exceptions;
 
 
 import javax.ws.rs.core.Response;
