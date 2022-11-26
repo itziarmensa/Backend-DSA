@@ -18,12 +18,14 @@ public class GameManagerImpl implements GameManager {
 
     private List<Object> tienda;
     private Map<String, User> users;
+    private List<User> registeredUsers;
 
     final static Logger logger = Logger.getLogger(GameManagerImpl.class);
 
     public GameManagerImpl() {
         this.tienda = new ArrayList<>();
         this.users=new HashMap<>();
+        this.registeredUsers=new ArrayList<>();
     }
 
     public static GameManager getInstance() {
@@ -36,9 +38,7 @@ public class GameManagerImpl implements GameManager {
         logger.info("size"+ret);
         return ret;
     }
-    public int numUsers(){
-        return users.size();
-    }
+
     public Boolean userExistsByCredentials(Credentials credentials){
         for(User user:this.users.values()){
             if(user.hasEmail(credentials)){
@@ -48,7 +48,11 @@ public class GameManagerImpl implements GameManager {
         return false;
     }
     @Override
-    public void registerUser(String userName,String userSurname,String birthDate,Credentials credentials) throws UserAlreadyExistsException {
+    public int numUsersRegistered(){
+        return registeredUsers.size();
+    }
+    @Override
+    public void registerUser(String userName, String userSurname, String birthDate, Credentials credentials) throws UserAlreadyExistsException {
         logger.info("Trying to register the user with information: ("+userName+", "+userSurname+", "+birthDate+", {credentials})");
         if(userExistsByCredentials(credentials)){
             logger.warn("Register not possible, user already exists!");
@@ -56,6 +60,7 @@ public class GameManagerImpl implements GameManager {
         }
         User user=new User(userName,userSurname,birthDate,credentials);
         this.users.put(user.getUserId(),user);
+        this.registeredUsers.add(user);
         logger.info("Register of user"+user+" was done!");
     }
 

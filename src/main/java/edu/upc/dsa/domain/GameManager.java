@@ -13,6 +13,7 @@ public interface GameManager {
     public void addObject(Object o);
 
     public int getNumObject();
+    public int numUsersRegistered();
     public List<Object> getTienda();
     public Object getObject(String name);
 }
