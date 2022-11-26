@@ -1,7 +1,8 @@
 package edu.upc.dsa.infraestructure;
 
 import edu.upc.dsa.domain.GameManager;
-import edu.upc.dsa.domain.entity.Object;
+import edu.upc.dsa.domain.entity.MyObjects;
+import edu.upc.dsa.domain.entity.TypeObject;
 import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
@@ -16,9 +17,10 @@ public class GameManagerImpl implements GameManager {
 
     private static GameManager instance;
 
-    private List<Object> tienda;
+    private List<MyObjects> tienda;
     private Map<String, User> users;
     private List<User> registeredUsers;
+    private List<TypeObject> types;
 
     final static Logger logger = Logger.getLogger(GameManagerImpl.class);
 
@@ -26,6 +28,7 @@ public class GameManagerImpl implements GameManager {
         this.tienda = new ArrayList<>();
         this.users=new HashMap<>();
         this.registeredUsers=new ArrayList<>();
+        this.types = new ArrayList<>();
     }
 
     public static GameManager getInstance() {
@@ -51,6 +54,7 @@ public class GameManagerImpl implements GameManager {
     public int numUsersRegistered(){
         return registeredUsers.size();
     }
+
     @Override
     public void registerUser(String userName, String userSurname, String birthDate, Credentials credentials) throws UserAlreadyExistsException {
         logger.info("Trying to register the user with information: ("+userName+", "+userSurname+", "+birthDate+", {credentials})");
@@ -65,8 +69,84 @@ public class GameManagerImpl implements GameManager {
     }
 
 
-    public void addObject(Object o){
+    public void addObject(MyObjects o){
         tienda.add(o);
+        logger.info("Object " + o.getName() +" has been successfully added to the store");
+        for(TypeObject to : this.types){
+            if(to.getIdType().equals(o.getIdTypeObject())){
+                o.setTypeObject(to);
+                logger.info("Object " + o.getName() +" has been correctly assigned type "+o.getIdTypeObject());
+            }
+        }
+    }
+    public void deleteObject(String idObject){
+
+        for (MyObjects o : this.tienda) {
+            if(o.getIdObject().equals(idObject)){
+                tienda.remove(o);
+                break;
+            }
+        }
+        logger.info("The Object"+idObject+" was been removed!");
+    }
+
+    public List<MyObjects> getListObject(String type){
+        List<MyObjects> myListObjectsbyType = new ArrayList<>();
+
+        for (MyObjects o : this.tienda) {
+            if(o.getTypeObject().getIdType().equals(type)){
+                myListObjectsbyType.add(o);
+                logger.info("The Objects that are of type "+ type +" are:  "+ myListObjectsbyType);
+            }
+        }
+        logger.info("There are no objects in the store of type " + type);
+        return myListObjectsbyType;
+    }
+    public void deleteListObject(String type){
+        List<MyObjects> myListObjectsbyTypeRem = new ArrayList<>();
+
+        for (MyObjects o : this.tienda) {
+            if(o.getTypeObject().getIdType().equals(type)){
+                myListObjectsbyTypeRem.add(o);
+                logger.info("Type "+ type +" bjects that have been removed are:  "+ myListObjectsbyTypeRem);
+            }
+        }
+        for(MyObjects oRem:myListObjectsbyTypeRem){
+            tienda.remove(oRem);
+        }
+        logger.info("There are no objects in the store of type " + type);
+    }
+
+    public void addTypeObject(TypeObject typeObject){
+        this.types.add(typeObject);
+        logger.info("Added a new type of Object ( " + typeObject.getIdType() + ")");
+    }
+
+    public List<TypeObject> getTypeObject(){
+        logger.info("We have " + types.size() +"of Objects");
+        return this.types;
+    }
+
+    public double getCoinsObject(String nameObject){
+
+        for (MyObjects o : this.tienda) {
+            if(o.getName().equals(nameObject)){
+                logger.info("The Object "+nameObject+" costs "+ o.getCoins() + "coins");
+                return o.getCoins();
+            }
+        }
+        logger.info("The Object is not in the Store");
+        return 0.0;
+    }
+    public String getDescriptionObject(String nameObject){
+        for (MyObjects o : this.tienda) {
+            if(o.getName().equals(nameObject)){
+                logger.info("The description of Object "+ nameObject +" is: "+ o.getDescriptionObject());
+                return o.getDescriptionObject();
+            }
+        }
+        logger.info("The Object is not in the Store");
+        return null;
     }
 
 
@@ -76,21 +156,19 @@ public class GameManagerImpl implements GameManager {
         return numObject;
     }
 
-    public List<Object> getTienda(){
+    public List<MyObjects> getTienda(){
         logger.info("tienda " + tienda);
         return this.tienda;
     }
 
-    public Object getObject(String name){
-        for (Object o : tienda) {
-            if (o.getName().equals(name)) {
+    public MyObjects getObject(String idObject){
+        for (MyObjects o : tienda) {
+            if (o.getIdObject().equals(idObject)) {
                 return o;
             }
-            logger.info("getObject(" + name + "): " + o);
+            logger.info("getObject(" + idObject + "): " + o);
         }
         return null;
     }
-
-
 
 }

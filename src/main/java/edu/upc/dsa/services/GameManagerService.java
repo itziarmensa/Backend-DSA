@@ -1,8 +1,9 @@
 package edu.upc.dsa.services;
 
 import edu.upc.dsa.domain.GameManager;
-import edu.upc.dsa.domain.entity.Object;
+import edu.upc.dsa.domain.entity.MyObjects;
 
+import edu.upc.dsa.domain.entity.TypeObject;
 import edu.upc.dsa.domain.entity.exceptions.EmailAddressNotValidException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.to.UserRegister;
@@ -36,51 +37,27 @@ public class GameManagerService {
             this.gameManager.registerUser("Itziar", "Mensa Minguito", "24/11/2001", credentials2);
 
 
-            Object o1 = new Object("11", "Espada", "Espada con poderes", 3.1);
+            TypeObject t1 = new TypeObject("1","xxxx");
+            gameManager.addTypeObject(t1);
+            TypeObject t2 = new TypeObject("2","xxxx");
+            gameManager.addTypeObject(t2);
+            TypeObject t3 = new TypeObject("3","xxxx");
+            gameManager.addTypeObject(t3);
+
+
+            MyObjects o1 = new MyObjects("11","Espada", "Espada con poderes","1", 3.1);
             gameManager.addObject(o1);
-            Object o2 = new Object("22", "Anillo", "Anillo teletransportador", 2.7);
+            MyObjects o2 = new MyObjects("22","Anillo", "Anillo teletransportador","2", 2.7);
             gameManager.addObject(o2);
-            Object o3 = new Object("33", "Traje", "Traje invisible", 4.5);
+            MyObjects o3 = new MyObjects("33","Traje", "Traje invisible", "3",4.5);
             gameManager.addObject(o3);
-            Object o4 = new Object("44", "Gafas", "Gafas visión del futuro", 5.25);
+            MyObjects o4 = new MyObjects("44","Gafas", "Gafas visión del futuro","2", 5.25);
             gameManager.addObject(o4);
-            Object o5 = new Object("55", "Pistola", "Pistola laser", 1.35);
+            MyObjects o5 = new MyObjects("55","Pistola", "Pistola laser", "2",1.35);
             gameManager.addObject(o5);
-            Object o6 = new Object("66", "Capa", "Capa voladora", 5);
+            MyObjects o6 = new MyObjects("66","Capa", "Capa voladora", "1",5);
             gameManager.addObject(o6);
         }
-    }
-
-
-    @GET
-    @ApiOperation(value = "get all Objects", notes = "asdasd")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Object.class, responseContainer = "List"),
-    })
-    @Path("/Object")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getObjects() {
-
-        List<Object> objects = this.gameManager.getTienda();
-        GenericEntity<List<Object>> entity = new GenericEntity<List<Object>>(objects) {
-        };
-        return Response.status(201).entity(entity).build();
-
-    }
-
-
-    @GET
-    @ApiOperation(value = "get an Object", notes = "asdasd")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Object.class),
-            @ApiResponse(code = 404, message = "Track not found")
-    })
-    @Path("/MyObject/{nombre}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getObject(@PathParam("nombre") String nombre) {
-        Object o = this.gameManager.getObject(nombre);
-        if (o == null) return Response.status(404).build();
-        else return Response.status(201).entity(o).build();
     }
 
     @POST
@@ -99,4 +76,36 @@ public class GameManagerService {
         }
         return Response.status(201).entity(user).build();
     }
+
+    @GET
+    @ApiOperation(value = "get all Objects", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = MyObjects.class, responseContainer = "List"),
+    })
+    @Path("/Object")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getObjects() {
+
+        List<MyObjects> objects = this.gameManager.getTienda();
+        GenericEntity<List<MyObjects>> entity = new GenericEntity<List<MyObjects>>(objects) {
+        };
+        return Response.status(201).entity(entity).build();
+
+    }
+
+    @GET
+    @ApiOperation(value = "get an Object", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = MyObjects.class),
+            @ApiResponse(code = 404, message = "Track not found")
+    })
+    @Path("/MyObject/{idObject}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getObject(@PathParam("idObject") String idObject) {
+        MyObjects o = this.gameManager.getObject(idObject);
+        if (o == null) return Response.status(404).build();
+        else return Response.status(201).entity(o).build();
+    }
+
+
 }
