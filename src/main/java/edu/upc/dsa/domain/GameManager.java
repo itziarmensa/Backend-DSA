@@ -1,10 +1,14 @@
 package edu.upc.dsa.domain;
 
 import edu.upc.dsa.domain.entity.Object;
+import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
+import edu.upc.dsa.domain.entity.vo.Credentials;
 
 import java.util.List;
 
 public interface GameManager {
+    public int size();
+    public void registerUser(String userName, String userSurname, String birthDate, Credentials credentials) throws UserAlreadyExistsException;
 
     public void addObject(Object o);
 
