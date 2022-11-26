@@ -2,7 +2,8 @@ package edu.upc.dsa.infraestructure;
 
 import edu.upc.dsa.domain.GameManager;
 import edu.upc.dsa.domain.entity.MyObjects;
-import edu.upc.dsa.domain.entity.TypeObject;
+import edu.upc.dsa.domain.entity.to.ObjectReg;
+import edu.upc.dsa.domain.entity.vo.TypeObject;
 import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
@@ -69,7 +70,8 @@ public class GameManagerImpl implements GameManager {
     }
 
 
-    public void addObject(MyObjects o){
+    public void addObject(ObjectReg objectReg){
+        MyObjects o = new MyObjects(objectReg.getIdObjectReg(),objectReg.getNameReg(),objectReg.getDescriptionObjectReg(),objectReg.getIdTypeObjectReg(),objectReg.getCoinsReg());
         tienda.add(o);
         logger.info("Object " + o.getName() +" has been successfully added to the store");
         for(TypeObject to : this.types){
@@ -119,10 +121,10 @@ public class GameManagerImpl implements GameManager {
 
     public void addTypeObject(TypeObject typeObject){
         this.types.add(typeObject);
-        logger.info("Added a new type of Object ( " + typeObject.getIdType() + ")");
+        logger.info("Added a new type of Object (" + typeObject.getIdType() + ")");
     }
 
-    public List<TypeObject> getTypeObject(){
+    public List<TypeObject> getAllType(){
         logger.info("We have " + types.size() +"of Objects");
         return this.types;
     }

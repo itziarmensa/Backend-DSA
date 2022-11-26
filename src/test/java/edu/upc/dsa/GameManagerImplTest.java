@@ -2,7 +2,8 @@ package edu.upc.dsa;
 
 import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.GameManager;
-import edu.upc.dsa.domain.entity.TypeObject;
+import edu.upc.dsa.domain.entity.to.ObjectReg;
+import edu.upc.dsa.domain.entity.vo.TypeObject;
 import edu.upc.dsa.domain.entity.exceptions.EmailAddressNotValidException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
@@ -31,17 +32,17 @@ public class GameManagerImplTest {
         gameManager.addTypeObject(t3);
 
 
-        MyObjects o1 = new MyObjects("11","Espada", "Espada con poderes","1", 3.1);
+        ObjectReg o1 = new ObjectReg("11","Espada", "Espada con poderes","1", 3.1);
         gameManager.addObject(o1);
-        MyObjects o2 = new MyObjects("22","Anillo", "Anillo teletransportador","2", 2.7);
+        ObjectReg o2 = new ObjectReg("22","Anillo", "Anillo teletransportador","2", 2.7);
         gameManager.addObject(o2);
-        MyObjects o3 = new MyObjects("33","Traje", "Traje invisible", "3",4.5);
+        ObjectReg o3 = new ObjectReg("33","Traje", "Traje invisible", "3",4.5);
         gameManager.addObject(o3);
-        MyObjects o4 = new MyObjects("44","Gafas", "Gafas visión del futuro","2", 5.25);
+        ObjectReg o4 = new ObjectReg("44","Gafas", "Gafas visión del futuro","2", 5.25);
         gameManager.addObject(o4);
-        MyObjects o5 = new MyObjects("55","Pistola", "Pistola laser", "2",1.35);
+        ObjectReg o5 = new ObjectReg("55","Pistola", "Pistola laser", "2",1.35);
         gameManager.addObject(o5);
-        MyObjects o6 = new MyObjects("66","Capa", "Capa voladora", "1",5);
+        ObjectReg o6 = new ObjectReg("66","Capa", "Capa voladora", "1",5);
         gameManager.addObject(o6);
     }
 
@@ -76,7 +77,7 @@ public class GameManagerImplTest {
     public void addObjectTest()
     {
         Assert.assertEquals(6, this.gameManager.getNumObject());
-        MyObjects o7 = new MyObjects("77","Pocima", "Pocima con veneno","1", 5);
+        ObjectReg o7 = new ObjectReg("77","Pocima", "Pocima con veneno","1", 5);
         gameManager.addObject(o7);
         Assert.assertEquals(7, this.gameManager.getNumObject());
 
@@ -92,7 +93,7 @@ public class GameManagerImplTest {
 
     @Test
     public void addTypeTest(){
-         List<TypeObject> myTypes = gameManager.getTypeObject();
+         List<TypeObject> myTypes = gameManager.getAllType();
         Assert.assertEquals(3, myTypes.size(),0.5);
         TypeObject t4 = new TypeObject("4","xxxx");
         gameManager.addTypeObject(t4);

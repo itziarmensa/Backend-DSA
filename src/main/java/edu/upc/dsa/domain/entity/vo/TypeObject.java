@@ -1,4 +1,4 @@
-package edu.upc.dsa.domain.entity;
+package edu.upc.dsa.domain.entity.vo;
 
 public class TypeObject {
 

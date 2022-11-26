@@ -1,5 +1,7 @@
 package edu.upc.dsa.domain.entity;
 
+import edu.upc.dsa.domain.entity.vo.TypeObject;
+
 public class MyObjects {
 
     private String idObject;
