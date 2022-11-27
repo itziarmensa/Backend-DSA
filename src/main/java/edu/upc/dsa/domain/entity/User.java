@@ -11,10 +11,11 @@ public class User {
     String userId;
     public User()
     {
-        this.userId= RandomId.getId(); //En principio lo puse así para tener una Id aleatoria. Hay que hablar de si queremos que siga algún orden o algo
+
     }
 
     public User(String userName, String userSurname, String userBirth, Credentials credentials) {
+        this.userId= RandomId.getId(); //En principio lo puse así para tener una Id aleatoria. Hay que hablar de si queremos que siga algún orden o algo
         this.userName = userName;
         this.userSurname = userSurname;
         this.userBirth = userBirth;
@@ -60,6 +61,7 @@ public class User {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
     public Boolean hasEmail(Credentials credentials){
         return this.credentials.getEmail().isEqual(credentials.getEmail());
     }

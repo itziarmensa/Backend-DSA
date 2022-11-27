@@ -11,6 +11,7 @@ import java.util.List;
 public interface GameManager {
     public int size();
     public void registerUser(String userName, String userSurname, String birthDate, Credentials credentials) throws UserAlreadyExistsException;
+    public Boolean login(Credentials credentials);
     public void addObject(ObjectReg o);
     public int getNumObject();
     public int numUsersRegistered();

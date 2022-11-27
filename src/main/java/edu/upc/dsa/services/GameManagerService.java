@@ -2,6 +2,7 @@ package edu.upc.dsa.services;
 
 import edu.upc.dsa.domain.GameManager;
 import edu.upc.dsa.domain.entity.MyObjects;
+import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.to.Coins;
 import edu.upc.dsa.domain.entity.to.ObjectReg;
 import edu.upc.dsa.domain.entity.to.TypeReg;
@@ -65,7 +66,7 @@ public class GameManagerService {
     @POST
     @ApiOperation(value = "register a new user", notes = "Register User")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Succesful", response = UserRegister.class),
+            @ApiResponse(code = 201, message = "Succesful", response = User.class),
             @ApiResponse(code = 409, message = "User already exists")
     })
     @Path("/user")
@@ -79,6 +80,24 @@ public class GameManagerService {
         return Response.status(201).entity(user).build();
     }
 
+    @POST
+    @ApiOperation(value = "login of a User", notes = "Login of a user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful"),
+            @ApiResponse(code = 500, message = "Missing Information"),
+            @ApiResponse(code = 501, message = "Error")
+    })
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response loginUser(Credentials credentials) {
+        if (credentials.getEmail().getEmail() == null || credentials.getPassword() == null) {
+            return Response.status(500).build();
+        }
+        if (!this.gameManager.login(credentials)) {
+            return Response.status(501).build();
+        }
+        return Response.status(200).build();
+    }
 
     @POST
     @ApiOperation(value = "add a new Object at the store", notes = "Register User")

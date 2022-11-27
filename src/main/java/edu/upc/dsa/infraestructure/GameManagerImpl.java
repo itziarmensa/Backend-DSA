@@ -63,12 +63,21 @@ public class GameManagerImpl implements GameManager {
             logger.warn("Register not possible, user already exists!");
             throw new UserAlreadyExistsException();
         }
-        User user=new User(userName,userSurname,birthDate,credentials);
+        User user = new User(userName,userSurname,birthDate,credentials);
         this.users.put(user.getUserId(),user);
         this.registeredUsers.add(user);
         logger.info("Register of user"+user+" was done!");
     }
 
+    @Override
+    public Boolean login(Credentials credentials) {
+        for(User user:this.users.values()){
+            if(user.getCredentials().isEqual(credentials)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void addObject(ObjectReg objectReg){
         MyObjects o = new MyObjects(objectReg.getIdObjectReg(),objectReg.getNameReg(),objectReg.getDescriptionObjectReg(),objectReg.getIdTypeObjectReg(),objectReg.getCoinsReg());
