@@ -31,7 +31,7 @@
                 $.ajax({
                     contentType: 'application/json',
                     type: 'POST',
-                    url: 'dsaApp/User/login',
+                    url: 'dsaApp/user/login',
                     data: JSON.stringify({'email': {'email': mailLogin}, 'password': passwordLogin}),
                     success: function (result) {
                         alert("Login successful");
@@ -57,7 +57,7 @@
                 $.ajax({
                     contentType: 'application/json',
                     type: 'POST',
-                    url: 'dsaApp/User/user',
+                    url: 'dsaApp/user',
                     data: JSON.stringify({
                         'userName': nameRegister,
                         'userSurname': surnameRegister,
@@ -80,7 +80,7 @@
                 $('#listaObjetos').show();
                 $.ajax({
                     type: 'GET',
-                    url: 'dsaApp/User/MyObjects',
+                    url: 'dsaApp/myObjects',
                     data: {},
                     dataType: 'text',
                     success: function (data) {
