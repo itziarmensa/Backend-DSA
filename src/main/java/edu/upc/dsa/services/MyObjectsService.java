@@ -52,24 +52,23 @@ public class MyObjectsService {
     @POST
     @ApiOperation(value = "add a new Object", notes = "Adds a new object to the store")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = ObjectReg.class),
-            @ApiResponse(code = 404, message = "User already exists")
+            @ApiResponse(code = 200, message = "Successful", response = ObjectReg.class),
+            @ApiResponse(code = 500, message = "Missing Information")
     })
     @Path("/")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addObject(ObjectReg o) {
-        try {
-            gameManager.addObject(o);
-        } catch (Exception e) {
-            return Response.status(404).entity(o).build();
+    public Response addObject(ObjectReg objectReg) {
+        if (objectReg.getIdObjectReg() == null || objectReg.getNameReg() == null ||objectReg.getDescriptionObjectReg() == null || objectReg.getCoinsReg() == 0.0 || objectReg.getIdTypeObjectReg() == null) {
+            return Response.status(500).build();
         }
-        return Response.status(201).entity(o).build();
+        gameManager.addObject(objectReg);
+        return Response.status(200).entity(objectReg).build();
     }
 
     @GET
     @ApiOperation(value = "get all Objects", notes = "Gets all the objects from the store")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = MyObjects.class, responseContainer = "List"),
+            @ApiResponse(code = 200, message = "Successful", response = MyObjects.class, responseContainer = "List"),
     })
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -77,44 +76,39 @@ public class MyObjectsService {
         List<MyObjects> objects = this.gameManager.getTienda();
         GenericEntity<List<MyObjects>> entity = new GenericEntity<List<MyObjects>>(objects) {
         };
-        return Response.status(201).entity(entity).build();
+        return Response.status(200).entity(entity).build();
     }
 
     @GET
     @ApiOperation(value = "get an Object", notes = "Gets an object from the id")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = MyObjects.class),
-            @ApiResponse(code = 404, message = "Object not found")
+            @ApiResponse(code = 200, message = "Successful", response = MyObjects.class),
+            @ApiResponse(code = 404, message = "Not Found")
     })
     @Path("/{idObject}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getObject(@PathParam("idObject") String idObject) {
-        MyObjects o = this.gameManager.getObject(idObject);
-        if (o == null) return Response.status(404).build();
-        else return Response.status(201).entity(o).build();
+        MyObjects object = this.gameManager.getObject(idObject);
+        if (object == null) return Response.status(404).build();
+        else return Response.status(200).entity(object).build();
     }
 
     @DELETE
     @ApiOperation(value = "delete an Object", notes = "Deletes an object with the id")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 404, message = "Object not found")
+            @ApiResponse(code = 200, message = "Successful"),
     })
     @Path("/{idObject}")
     public Response deleteObject(@PathParam("idObject") String idObject) {
-        try{
-            this.gameManager.deleteObject(idObject);
-        } catch (Exception e) {
-            return Response.status(404).entity(idObject).build();
-        }
-        return Response.status(201).entity(idObject).build();
+        this.gameManager.deleteObject(idObject);
+        return Response.status(200).build();
     }
 
     @GET
     @ApiOperation(value = "get a List of Object from the type", notes = "Gets a list of objects of a certain type")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = MyObjects.class, responseContainer = "List"),
-            @ApiResponse(code = 404, message = "Objects not found")
+            @ApiResponse(code = 200, message = "Successful", response = MyObjects.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = "Not Found")
     })
     @Path("/{type}/myObjects")
     @Produces(MediaType.APPLICATION_JSON)
@@ -122,70 +116,65 @@ public class MyObjectsService {
         List<MyObjects> myList = this.gameManager.getListObject(type);
         GenericEntity<List<MyObjects>> entity = new GenericEntity<List<MyObjects>>(myList) {
         };
-        return Response.status(201).entity(entity).build();
+        return Response.status(200).entity(entity).build();
     }
 
     @DELETE
     @ApiOperation(value = "delete all Object with a certain type", notes = "Deletes an object from a certain type")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful"),
-            @ApiResponse(code = 404, message = "Type not found")
+            @ApiResponse(code = 200, message = "Successful"),
     })
     @Path("/{type}/myObjects")
     public Response deleteListObject(@PathParam("type") String type) {
-        try{
-            this.gameManager.deleteListObject(type);
-        } catch (Exception e) {
-            return Response.status(404).entity(type).build();
-        }
-        return Response.status(201).entity(type).build();
+        this.gameManager.deleteListObject(type);
+        return Response.status(200).build();
     }
 
     @POST
     @ApiOperation(value = "add a new type of Object", notes = "Adds a new type of object")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = TypeObject.class),
-            @ApiResponse(code = 404, message = "Type already exists")
+            @ApiResponse(code = 200, message = "Successful", response = TypeObject.class),
+            @ApiResponse(code = 500, message = "Missing Information")
     })
     @Path("/type")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response addTypeObject(TypeReg typeReg) {
-        TypeObject myTypeObject = new TypeObject(typeReg.getIdTypeReg(),typeReg.getDescriptionReg());
-        try {
-            this.gameManager.addTypeObject(myTypeObject);
-        } catch (Exception e) {
-            return Response.status(404).entity(myTypeObject).build();
+        if (typeReg.getIdTypeReg() == null || typeReg.getDescriptionReg() == null)
+        {
+            return Response.status(500).build();
         }
-        return Response.status(201).entity(myTypeObject).build();
+        TypeObject myTypeObject = new TypeObject(typeReg.getIdTypeReg(),typeReg.getDescriptionReg());
+        this.gameManager.addTypeObject(myTypeObject);
+        return Response.status(200).entity(myTypeObject).build();
     }
 
     @GET
     @ApiOperation(value = "get the coins of an Object", notes = "Gets the coins of an object")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = Double.class),
-            @ApiResponse(code = 404, message = "Object not found")
+            @ApiResponse(code = 200, message = "Successful", response = Coins.class),
+            @ApiResponse(code = 404, message = "Not Found")
     })
     @Path("/{name}/coins")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCoinsObject(@PathParam("name") String name) {
         double coins = this.gameManager.getCoinsObject(name);
-        Coins c = new Coins(coins);
-        GenericEntity <Coins> entity = new GenericEntity<Coins>(c) {  };
-        if (c==null)return Response.status(404).entity(entity).build();
-        return Response.status(201).entity(entity).build();
+        Coins newCoins = new Coins(coins);
+        GenericEntity <Coins> entity = new GenericEntity<Coins>(newCoins) {  };
+        if (newCoins == null) return Response.status(404).entity(entity).build();
+        return Response.status(200).entity(entity).build();
     }
 
     @GET
     @ApiOperation(value = "get description of an Object", notes = "Gets the description of an object")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = String.class),
-            @ApiResponse(code = 404, message = "Object not found")
+            @ApiResponse(code = 200, message = "Successful", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found")
     })
     @Path("/{name}/description")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDescriptionObject(@PathParam("name") String name) {
         String des = this.gameManager.getDescriptionObject(name);
-        if(des == "")return Response.status(404).entity(des).build();
-        return Response.status(201).entity(des).build();
+        if(des == "") return Response.status(404).entity(des).build();
+        return Response.status(200).entity(des).build();
     }
 }

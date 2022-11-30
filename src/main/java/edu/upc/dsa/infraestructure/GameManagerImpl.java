@@ -98,7 +98,7 @@ public class GameManagerImpl implements GameManager {
                 break;
             }
         }
-        logger.info("The Object"+idObject+" was been removed!");
+        logger.info("The Object " + idObject + " has been removed!");
     }
 
     public List<MyObjects> getListObject(String type){
@@ -119,7 +119,7 @@ public class GameManagerImpl implements GameManager {
         for (MyObjects o : this.tienda) {
             if(o.getTypeObject().getIdType().equals(type)){
                 myListObjectsbyTypeRem.add(o);
-                logger.info("Type "+ type +" bjects that have been removed are:  "+ myListObjectsbyTypeRem);
+                logger.info("Type " + type + " objects that have been removed are:  " + myListObjectsbyTypeRem);
             }
         }
         for(MyObjects oRem:myListObjectsbyTypeRem){

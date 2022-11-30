@@ -36,16 +36,20 @@ public class UserService {
     @POST
     @ApiOperation(value = "register a new user", notes = "Register User")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = User.class),
-            @ApiResponse(code = 409, message = "User already exists")
+            @ApiResponse(code = 200, message = "Successful", response = User.class),
+            @ApiResponse(code = 406, message = "User already exists"),
+            @ApiResponse(code = 500, message = "Missing Information")
     })
     @Path("/")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response registerUser(UserRegister user) throws UserAlreadyExistsException {
+        if (user.getUserName() == null || user.getUserSurname() == null || user.getBirthDate() == null || user.getCredentials() == null) {
+            return Response.status(500).build();
+        }
         try {
             this.gameManager.registerUser(user.getUserName(), user.getUserSurname(), user.getBirthDate(), user.getCredentials());
         } catch (UserAlreadyExistsException e) {
-            return Response.status(409).entity(user).build();
+            return Response.status(406).build();
         }
         return Response.status(201).entity(user).build();
     }
@@ -54,8 +58,8 @@ public class UserService {
     @ApiOperation(value = "login of a User", notes = "Login of a user")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successful"),
-            @ApiResponse(code = 500, message = "Missing Information"),
-            @ApiResponse(code = 501, message = "Error")
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Missing Information")
     })
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -64,7 +68,7 @@ public class UserService {
             return Response.status(500).build();
         }
         if (!this.gameManager.login(credentials)) {
-            return Response.status(501).build();
+            return Response.status(404).build();
         }
         return Response.status(200).build();
     }
