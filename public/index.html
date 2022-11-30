@@ -1,159 +1,203 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#registerContainer').hide();
-            $('#listaObjetos').hide();
-            $('#tableButton').hide();
-
-            $('#createUser').click(function () {
-                $('#loginContainer').hide();
-                $('#registerContainer').show();
-            });
-
-            $('#back').click(function () {
-                $('#registerContainer').hide();
-                $('#loginContainer').show();
-            });
-
-            $('#login').click(function () {
-                var mailLogin = $('#mailLogin').val();
-                var passwordLogin = $('#passwordLogin').val();
-                $.ajax({
-                    contentType: 'application/json',
-                    type: 'POST',
-                    url: 'dsaApp/user/login',
-                    data: JSON.stringify({'email': {'email': mailLogin}, 'password': passwordLogin}),
-                    success: function (result) {
-                        alert("Login successful");
-                        $('#registerContainer').hide();
-                        $('#loginContainer').hide();
-                        $('#tableButton').show();
-                    },
-                    error: function (error) {
-                        if (mailLogin == "" || passwordLogin == "")
-                            alert("You left something blank, please try again!");
-                        else
-                            alert("Wrong mail or password, please try again!");
-                    }
-                });
-            });
-
-            $('#register').click(function () {
-                var nameRegister = $('#nameRegister').val();
-                var surnameRegister = $('#surnameRegister').val();
-                var birthRegister = $('#birthRegister').val();
-                var mailRegister = $('#mailRegister').val();
-                var passwordRegister = $('#passwordRegister').val();
-                $.ajax({
-                    contentType: 'application/json',
-                    type: 'POST',
-                    url: 'dsaApp/user',
-                    data: JSON.stringify({
-                        'userName': nameRegister,
-                        'userSurname': surnameRegister,
-                        'birthDate': birthRegister,
-                        'credentials': {'email': {'email': mailRegister}, 'password': passwordRegister}
-                    }),
-                    dataType: 'json',
-                    success: function (result) {
-                        alert("Register successful");
-                        $('#registerContainer').hide();
-                        $('#loginContainer').show();
-                    },
-                    error: function (error) {
-                        alert("Register failed");
-                    }
-                });
-            });
-
-            $("#tableButton").click(function () {
-                $('#listaObjetos').show();
-                $.ajax({
-                    type: 'GET',
-                    url: 'dsaApp/myObjects',
-                    data: {},
-                    dataType: 'text',
-                    success: function (data) {
-                        var json = $.parseJSON(data);
-                        $('#results').empty();
-                        for (var i = 0; i < json.length; ++i) {
-                            $('#results').append('<tr>' +
-                                '<td>' + json[i].name + '</td>' +
-                                '<td>' + json[i].descriptionObject + '</td>' +
-                                '<td>' + json[i].coins + '</td>' +
-                                '<td>' + json[i].typeObject.description + '</td>' +
-                                '</tr>');
-                        }
-                    },
-                    error: function (error) {
-                        alert("Not able to create the table. Try again");
-                    }
-                });
-            });
-        });
-    </script>
+    <title>MammaMia</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="shortcut icon" href="media/seta.png" type="image/x-icon">
+    <link rel="stylesheet" href="index.css">
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
+<header>
+    <div class="container">
+        <p class="logo">
+        <div class="logo">
+            <a title="Inicio" href="#hero"><img src="media/logo.png" alt="" class="logoEditor" alt="Inicio"></a>
+        </div>
+        </p>
+    </div>
+    <div class="hamburger-menu">
+        <input id="menu__toggle" type="checkbox" />
+        <label class="menu__btn" for="menu__toggle">
+            <span></span>
+        </label>
 
-<div class="text-center"><h1>Welcome</h1></div>
+        <ul class="menu__box">
+            <li><a> </a></li>
+            <li><a class="menu__item" href="#nosotros">Nosotros</a></li>
+            <li><a class="menu__item" href="#plataformas">Plataformas</a></li>
+            <li><a class="menu__item" href="#caracteristicas">Carcaterísticas</a></li>
+            <li><a class="menu__item" href="#juego">Juego</a></li>
+            <li><a class="menu__item" href="#novedades">Novedades</a></li>
+            <li><a class="menu__item" href="#final">Inicio de Sesión/Registro</a></li>
+            <li><a class="menu__item" href="#contacto">Contacto</a></li>
 
-<div class="container" id="loginContainer">
-    <input type="email" class="form-control" id="mailLogin" value="" placeholder="Mail"></p>
+        </ul>
+    </div>
+</header>
 
-    <input type="password" class="form-control" id="passwordLogin" value="" placeholder="Password"></p>
-
-    <button type="button" class="btn btn-success btn-block" id="login">Login</button>
+<section id="hero">
+    <h1>Inicio</h1>
+    <p>
+        "La serie Mario Party™ está de regreso con una colección superestrella de tableros y minijuegos clásicos, exclusivamente para las consolas de la familia Nintendo Switch™. Toma la ventaja en disparatadas partidas con tus amigos y tu familia donde las circunstancias pueden cambiar al lanzar los dados."
     </p>
+    <button>Empecemos</button>
+</section>
 
-    <button type="button" class="btn btn-success btn-block" id="createUser">Register</button>
-    </p>
-</div>
+<section id="nosotros">
+    <div class="container">
+        <a title="Inicio" href="https://eetac.upc.edu/ca"><img src="media/eetac.jpg" alt="" class="img-container"></a>
+        <div class="texto">
 
-<div class="container" id="registerContainer">
-    <input type="text" class="form-control" id="nameRegister" value="" placeholder="Name"></p>
+            <h2>Somos <span class="color-acento">¡MammaMia!</span></h2>
+            <p>Somos un grupo de estudiantes de 4 de carrera de la EETAC</p>
+            <figure>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11993.800837946897!2d1.9803905791540644!3d41.2773052178319!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x53aec7154de459b3!2sUPC%20Escuela%20de%20Ingenier%C3%ADa%20de%20Telecomunicaci%C3%B3n%20y%20Aeroespacial%20de%20Castelldefels!5e0!3m2!1ses!2ses!4v1669748179784!5m2!1ses!2ses" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </figure>
+        </div>
+    </div>
+</section>
 
-    <input type="text" class="form-control" id="surnameRegister" value="" placeholder="Surname"></p>
+<section id="plataformas">
+    <div class="container">
+        <h2>Plataformas disponibles</h2>
+        <div class="plataformas">
+            <div class="carta">
+                <i class="fab fa-windows"></i>
+                <h3>Windows</h3>
+                <p>Disponible a partir de Windows 10</p>
+                <button>+ Info</button>
+            </div>
+            <div class="carta">
+                <i class="fab fa-apple"></i>
+                <h3>Apple</h3>
+                <p>Disponible tanto para iPhone como para MAC </p>
+                <button>+ Info</button>
+            </div>
+            <div class="carta">
+                <i class="fab fa-android"></i>
+                <h3>Android</h3>
+                <p>Disponible para Android LoliPop y Oreo</p>
+                <button>+ Info</button>
+            </div>
 
-    <input type="text" class="form-control" id="birthRegister" value="" placeholder="Birthdate"></p>
+        </div>
+    </div>
+</section>
 
-    <input type="email" class="form-control" id="mailRegister" value="" placeholder="Mail"></p>
+<section id="caracteristicas">
+    <div class="container">
+        <ul>
+            <li>📲 100% online</li>
+            <li>🌍 ️ Desde donde quieras</li>
+            <li>🕐️ Soporte 24h</li>
+            <li>😄️ Diversión asegurada</li>
+            <li></li>
+        </ul>
 
-    <input type="password" class="form-control" id="passwordRegister" value="" placeholder="Password"></p>
+    </div>
+</section>
+<section id="juego">
+    <div class="container">
+        <h2><span class="colorTitle">Juego</span></h2>
+        <div class="mapas">
+            <p class="parrafoIndMapas">Mapas</p>
+            <a title="Mapas" href="mapas.html"><img src="media/mapa.jpg" alt="" class="mapaEditor" alt="Mapa"></a>
+        </div>
+        <div class="objetos">
+            <p class="parrafoIndObjetos">Objetos</p>
+            <a title="Objetos" href="objetos.html"><img src="media/objetos.jpg" alt="" class="objetosEditor" alt="Objetos"></a>
+        </div>
+        <div class="personajes">
+            <p class="parrafoIndPersonajes">Personajes</p>
+            <a title="Personajes" href="personajes.html"><img src="media/personajes.jpg" alt="" class="personajesEditor" alt="Personajes"></a>
+        </div>
+    </div>
+</section>
+<section id="novedades">
+    <div class="container">
+        <h2><span class="color-acento">Últimas Novedades</span></h2>
+        <div class="novedades">
+            <div class="cartaSegundas">
+                <h3>Actualización 1.22.1</h3>
+                <p>Corrección de errores</p>
+                <button>+ Info</button>
+            </div>
+            <div class="cartaSegundas">
+                <h3>Nerfeo Yoshi</h3>
+                <p>Bajada de las estadísticas de Yoshi en ataque</p>
+                <button>+ Info</button>
+            </div>
+            <div class="cartaSegundas">
+                <h3>Historia de Wario</h3>
+                <p>¿Cómo fue la infancia del minero?</p>
+                <button>+ Info</button>
+            </div>
 
-    <button type="button" class="btn btn-success btn-block" id="register">Register</button>
-    </p>
+        </div>
+    </div>
+</section>
 
-    <button type="button" class="btn btn-success btn-block" id="back">Back</button>
-    </p>
-</div>
+<section id="final">
 
-<div class="container"><button type="button" class="btn btn-success btn-block" id="tableButton">Show table</button></div>
+    <h2>¿Listo para comenzar?</h2>
+    <h3>Inicia sesión o Registrate</h3>
+    <button onclick="window.location.href='register.html';">DALE</button>
+</section>
 
-<div class="container" id="listaObjetos">
-    </p>
-    <table id="table" class="table table-striped table-bordered">
-        <thead class="thead-light">
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Coins</th>
-            <th>Type</th>
-        </tr>
-        </thead>
-        <tbody id="results">
-        </tbody>
-    </table>
-</div>
+<section id="contacto">
 
+    <h2>Contacto</h2>
+    <div class="container">
+        <table class="table table-hover">
+            <thead class="table-success">
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Óscar</td>
+                <td>Boullosa Dapena</td>
+                <td>
+                    <a href="mailto:oscar.boullosa@estudiantat.upc.edu?Subject=Duda%20con%20el%20juego">Contactar por correo a Óscar</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Itziar</td>
+                <td>Mensa Minguito</td>
+                <td>
+                    <a href="mailto:itziar.mensa@estudiantat.upc.edu?Subject=Duda%20con%20el%20juego">Contactar por correo a Itziar</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Pau</td>
+                <td>Feixa Morancho</td>
+                <td><a href="mailto:pau.feixa@estudiantat.upc.edu?Subject=Duda%20con%20el%20juego">Contactar por correo a Pau</a></td>
+            </tr>
+            <tr>
+                <td>Lluc</td>
+                <td>Feixa Morancho</td>
+                <td><a href="mailto:lluc.feixa@estudiantat.upc.edu?Subject=Duda%20con%20el%20juego">Contactar por correo a Lluc</a></td>
+            </tr>
+            <tr>
+                <td>Anna</td>
+                <td>Iturralde Aguiló</td>
+                <td><a href="mailto:anna.iturralde@estudiantat.upc.edu?Subject=Duda%20con%20el%20juego">Contactar por correo a Anna</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<footer>
+    <div class="container">
+        <p>&copy; ¡MammaMia! Enterprise 2022</p>
+    </div>
+</footer>
 </body>
 </html>
