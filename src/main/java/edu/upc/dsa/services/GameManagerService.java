@@ -78,7 +78,7 @@ public class GameManagerService {
         } catch (UserAlreadyExistsException e) {
             return Response.status(406).build();
         }
-        return Response.status(201).entity(user).build();
+        return Response.status(200).entity(user).build();
     }
 
     @POST
