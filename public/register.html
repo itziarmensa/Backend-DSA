@@ -33,7 +33,7 @@
                 $.ajax({
                     contentType: 'application/json',
                     type: 'POST',
-                    url: 'dsaApp/user/login',
+                    url: 'dsaApp/gameManager/user/login',
                     data: JSON.stringify({'email': {'email': mailLogin}, 'password': passwordLogin}),
                     success: function (result) {
                         alert("Login successful");
@@ -59,7 +59,7 @@
                 $.ajax({
                     contentType: 'application/json',
                     type: 'POST',
-                    url: 'dsaApp/user',
+                    url: 'dsaApp/gameManager/user',
                     data: JSON.stringify({
                         'userName': nameRegister,
                         'userSurname': surnameRegister,
@@ -82,7 +82,7 @@
                 $('#listaObjetos').show();
                 $.ajax({
                     type: 'GET',
-                    url: 'dsaApp/myObjects',
+                    url: 'dsaApp/gameManager/myObjects',
                     data: {},
                     dataType: 'text',
                     success: function (data) {
