@@ -56,26 +56,32 @@
                 var birthRegister = $('#birthRegister').val();
                 var mailRegister = $('#mailRegister').val();
                 var passwordRegister = $('#passwordRegister').val();
-                $.ajax({
-                    contentType: 'application/json',
-                    type: 'POST',
-                    url: 'dsaApp/gameManager/user',
-                    data: JSON.stringify({
-                        'userName': nameRegister,
-                        'userSurname': surnameRegister,
-                        'birthDate': birthRegister,
-                        'credentials': {'email': {'email': mailRegister}, 'password': passwordRegister}
-                    }),
-                    dataType: 'json',
-                    success: function (result) {
-                        alert("Register successful");
-                        $('#registerContainer').hide();
-                        $('#loginContainer').show();
-                    },
-                    error: function (error) {
-                        alert("Register failed");
-                    }
-                });
+                var passwordRegister2 = $('#passwordRegister2').val();
+                if (passwordRegister == passwordRegister2) {
+                    $.ajax({
+                        contentType: 'application/json',
+                        type: 'POST',
+                        url: 'dsaApp/gameManager/user',
+                        data: JSON.stringify({
+                            'userName': nameRegister,
+                            'userSurname': surnameRegister,
+                            'birthDate': birthRegister,
+                            'credentials': {'email': {'email': mailRegister}, 'password': passwordRegister}
+                        }),
+                        dataType: 'json',
+                        success: function (result) {
+                            alert("Register successful");
+                            $('#registerContainer').hide();
+                            $('#loginContainer').show();
+                        },
+                        error: function (error) {
+                            alert("Register failed");
+                        }
+                    });
+                }
+                else {
+                    alert("Password has to be the same");
+                }
             });
 
             $("#tableButton").click(function () {
@@ -126,11 +132,13 @@
 
     <input type="text" class="form-control" id="surnameRegister" value="" placeholder="Surname"></p>
 
-    <input type="text" class="form-control" id="birthRegister" value="" placeholder="Birthdate"></p>
+    <input type="date" class="form-control" id="birthRegister" value="" placeholder="Birthdate"></p>
 
     <input type="email" class="form-control" id="mailRegister" value="" placeholder="Mail"></p>
 
     <input type="password" class="form-control" id="passwordRegister" value="" placeholder="Password"></p>
+
+    <input type="password" class="form-control" id="passwordRegister2" value="" placeholder="Repeat Password"></p>
 
     <button type="button" class="btn btn-success btn-block" id="register">Register</button>
     </p>
