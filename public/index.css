@@ -740,3 +740,96 @@ footer .container{
         background-position-x: calc(100vw - 800px);
     }
 }
+
+.container1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #111111;
+}
+
+
+#text1{
+    color: white;
+}
+
+#mailLogin{
+    height: 5vh;
+}
+
+#passwordLogin{
+    height: 5vh;
+}
+
+.container3 {
+    margin-top: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    background-color: black;
+}
+
+.container4{
+    background-color: white;
+}
+
+.containerRegistro{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #111111;
+}
+
+#mailRegister{
+    height: 5vh;
+    width: 30vh;
+}
+
+#passwordRegister{
+    height: 5vh;
+    width: 30vh;
+}
+
+#passwordRegister2{
+    height: 5vh;
+    width: 30vh;
+}
+
+#nameRegister{
+    height: 5vh;
+    width: 30vh;
+}
+
+#surnameRegister{
+    height: 5vh;
+    width: 30vh;
+}
+
+#birthRegister{
+    height: 5vh;
+    width: 30vh;
+}
+
+#register{
+    width: 20vh;
+}
+
+#back{
+    width: 20vh;
+}
+
+#eligeObjeto{
+    color: white;
+}
+
+
+
+
