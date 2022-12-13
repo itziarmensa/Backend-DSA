@@ -136,7 +136,7 @@ public class GameManagerImpl implements GameManager {
 
     public void addTypeObject(ObjectType objectType) {
         this.types.add(objectType);
-        logger.info("Added a new type of Object (" + objectType.getIdType() + ")");
+        logger.info("Added a new type of Object (" + objectType.getObjectTypeId() + ")");
     }
 
     public List<ObjectType> getAllType() {

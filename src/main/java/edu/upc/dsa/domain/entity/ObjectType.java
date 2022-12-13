@@ -2,30 +2,30 @@ package edu.upc.dsa.domain.entity;
 
 public class ObjectType {
 
-    private String idType;
-    private String description;
+    private String objectTypeId;
+    private String objectTypeDescription;
 
     public ObjectType() {
     }
 
-    public ObjectType(String idType, String description) {
-        this.idType = idType;
-        this.description = description;
+    public ObjectType(String objectTypeId, String objectTypeDescription) {
+        this.objectTypeId = objectTypeId;
+        this.objectTypeDescription = objectTypeDescription;
     }
 
-    public String getIdType() {
-        return idType;
+    public String getObjectTypeId() {
+        return objectTypeId;
     }
 
-    public void setIdType(String idType) {
-        this.idType = idType;
+    public void setObjectTypeId(String objectTypeId) {
+        this.objectTypeId = objectTypeId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getObjectTypeDescription() {
+        return objectTypeDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setObjectTypeDescription(String objectTypeDescription) {
+        this.objectTypeDescription = objectTypeDescription;
     }
 }

@@ -215,11 +215,11 @@ public class GameManagerService {
     @Path("/myObjects/type")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response addTypeObject(ObjectType objectType) {
-        if (objectType.getIdType() == null || objectType.getDescription() == null)
+        if (objectType.getObjectTypeId() == null || objectType.getObjectTypeDescription() == null)
         {
             return Response.status(500).build();
         }
-        ObjectType myObjectType = new ObjectType(objectType.getIdType(), objectType.getDescription());
+        ObjectType myObjectType = new ObjectType(objectType.getObjectTypeId(), objectType.getObjectTypeDescription());
         this.gameManager.addTypeObject(myObjectType);
         return Response.status(200).entity(myObjectType).build();
     }
