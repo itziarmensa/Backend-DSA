@@ -1,23 +1,29 @@
 package edu.upc.dsa.domain.entity.vo;
 
+import edu.upc.dsa.domain.entity.exceptions.EmailAddressNotValidException;
+import org.apache.commons.validator.routines.EmailValidator;
+
 import java.util.Objects;
 
 public class Credentials {
-    EmailAddress email;
+    String email;
     String password;
 
     public Credentials() {}
-    public Credentials(EmailAddress email,String password){
+    public Credentials(String email,String password){
         this.email=email;
         this.password=password;
     }
 
-    public EmailAddress getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(EmailAddress email) {
-        this.email = email;
+    public void setEmail(String email) throws EmailAddressNotValidException {
+        if(!EmailValidator.getInstance().isValid(email)){
+            throw new EmailAddressNotValidException();
+        }
+        this.email=email;
     }
 
     public String getPassword() {
@@ -26,9 +32,5 @@ public class Credentials {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Boolean isEqual(Credentials credentials){
-        return (this.email.isEqual(credentials.getEmail())&& Objects.equals(this.password,credentials.getPassword()));
     }
 }

@@ -1,18 +1,18 @@
 package edu.upc.dsa.domain.entity.to;
 
-import edu.upc.dsa.domain.entity.vo.Credentials;
-
 public class UserRegister {
     String userName;
     String userSurname;
-    String birthDate;
-    Credentials credentials;
+    String userBirth;
+    String email;
+    String password;
     public UserRegister(){}
-    public UserRegister(String userName,String userSurname,String birthDate,Credentials credentials){
+    public UserRegister(String userName,String userSurname,String userBirth,String email,String password) {
         this.userName=userName;
         this.userSurname=userSurname;
-        this.birthDate=birthDate;
-        this.credentials=credentials;
+        this.userBirth=userBirth;
+        this.email=email;
+        this.password=password;
     }
 
     public String getUserName() {
@@ -31,19 +31,27 @@ public class UserRegister {
         this.userSurname = userSurname;
     }
 
-    public String getBirthDate() {
-        return birthDate;
+    public String getUserBirth() {
+        return userBirth;
     }
 
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
+    public void setUserBirth(String userBirth) {
+        this.userBirth = userBirth;
     }
 
-    public Credentials getCredentials() {
-        return credentials;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCredentials(Credentials credentials) {
-        this.credentials = credentials;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

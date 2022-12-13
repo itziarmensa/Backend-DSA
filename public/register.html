@@ -35,8 +35,9 @@
                         data: JSON.stringify({
                             'userName': nameRegister,
                             'userSurname': surnameRegister,
-                            'birthDate': birthRegister,
-                            'credentials': {'email': {'email': mailRegister}, 'password': passwordRegister}
+                            'userBirth': birthRegister,
+                            'email': mailRegister,
+                            'password': passwordRegister
                         }),
                         dataType: 'json',
                         success: function (result) {

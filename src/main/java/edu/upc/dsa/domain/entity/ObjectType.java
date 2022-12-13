@@ -1,14 +1,14 @@
-package edu.upc.dsa.domain.entity.vo;
+package edu.upc.dsa.domain.entity;
 
-public class TypeObject {
+public class ObjectType {
 
     private String idType;
     private String description;
 
-    public TypeObject() {
+    public ObjectType() {
     }
 
-    public TypeObject(String idType, String description) {
+    public ObjectType(String idType, String description) {
         this.idType = idType;
         this.description = description;
     }

@@ -3,8 +3,7 @@ package edu.upc.dsa.infraestructure;
 import edu.upc.dsa.domain.GameManager;
 import edu.upc.dsa.domain.entity.Characters;
 import edu.upc.dsa.domain.entity.MyObjects;
-import edu.upc.dsa.domain.entity.to.ObjectReg;
-import edu.upc.dsa.domain.entity.vo.TypeObject;
+import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
@@ -23,7 +22,7 @@ public class GameManagerImpl implements GameManager {
     private List<MyObjects> tienda;
     private Map<String, User> users;
     private List<User> registeredUsers;
-    private List<TypeObject> types;
+    private List<ObjectType> types;
 
     private List<Dice> dados;
     private List<Characters> characters;
@@ -44,16 +43,16 @@ public class GameManagerImpl implements GameManager {
         return instance;
     }
 
-    /**User*/
+    /**User**/
     public int size() {
         int ret = this.users.size();
         logger.info("size " + ret);
         return ret;
     }
 
-    public Boolean userExistsByCredentials(Credentials credentials) {
+    public Boolean userExistsByEmail(String email) {
         for (User user : this.users.values()) {
-            if (user.hasEmail(credentials)) {
+            if (user.hasEmail(email)) {
                 return true;
             }
         }
@@ -66,23 +65,23 @@ public class GameManagerImpl implements GameManager {
     }
 
     @Override
-    public void registerUser(String userName, String userSurname, String birthDate, Credentials credentials) throws UserAlreadyExistsException {
-        logger.info("Trying to register the user with information: (" + userName + ", " + userSurname + ", " + birthDate + ", {" + credentials.getEmail().getEmail() + ", " + credentials.getPassword() + "})");
-        if (userExistsByCredentials(credentials)) {
+    public void registerUser(String userName, String userSurname, String birthDate, String email, String password) throws UserAlreadyExistsException {
+        logger.info("Trying to register the user with information: (" + userName + ", " + userSurname + ", " + birthDate + ", {" + email + ", " + password + "})");
+        if (userExistsByEmail(email)) {
             logger.warn("Register not possible, user already exists!");
             throw new UserAlreadyExistsException();
         }
-        User user = new User(userName, userSurname, birthDate, credentials);
+        User user = new User(userName, userSurname, birthDate, email, password);
         this.users.put(user.getUserId(), user);
         this.registeredUsers.add(user);
-        logger.info("Register of user with email " + user.getCredentials().getEmail().getEmail() + " has been successfully done!");
+        logger.info("Register of user with email " + user.getEmail() + " has been successfully done!");
     }
 
     @Override
     public Boolean login(Credentials credentials) {
         for (User user : this.users.values()) {
-            if (user.getCredentials().isEqual(credentials)) {
-                logger.info("Login of user with email " + user.getCredentials().getEmail().getEmail() + " has been successfully done!");
+            if (user.getEmail().equals(credentials.getEmail()) && user.getPassword().equals(credentials.getPassword())) {
+                logger.info("Login of user with email " + user.getEmail() + " has been successfully done!");
                 return true;
             }
         }
@@ -90,22 +89,16 @@ public class GameManagerImpl implements GameManager {
         return false;
     }
 
-    /**Objects*/
-    public void addObject(ObjectReg objectReg) {
-        MyObjects o = new MyObjects(objectReg.getIdObjectReg(), objectReg.getNameReg(), objectReg.getDescriptionObjectReg(), objectReg.getIdTypeObjectReg(), objectReg.getCoinsReg());
+    /**Objects**/
+    public void addObject(MyObjects myObject) {
+        MyObjects o = new MyObjects(myObject.getObjectId(), myObject.getObjectName(), myObject.getObjectDescription(), myObject.getObjectCoins(), myObject.getObjectTypeId());
         tienda.add(o);
-        logger.info("Object " + o.getName() + " has been successfully added to the store");
-        for (TypeObject to : this.types) {
-            if (to.getIdType().equals(o.getIdTypeObject())) {
-                o.setTypeObject(to);
-                logger.info("Object " + o.getName() + " has been correctly assigned type " + o.getIdTypeObject());
-            }
-        }
+        logger.info("Object " + o.getObjectName() + " has been successfully added to the store");
     }
 
     public void deleteObject(String idObject) {
         for (MyObjects o : this.tienda) {
-            if (o.getIdObject().equals(idObject)) {
+            if (o.getObjectId().equals(idObject)) {
                 tienda.remove(o);
                 break;
             }
@@ -117,7 +110,7 @@ public class GameManagerImpl implements GameManager {
         List<MyObjects> myListObjectsbyType = new ArrayList<>();
 
         for (MyObjects o : this.tienda) {
-            if (o.getTypeObject().getIdType().equals(type)) {
+            if (o.getObjectTypeId().equals(type)) {
                 myListObjectsbyType.add(o);
                 logger.info("The Objects that are of type " + type + " are:  " + myListObjectsbyType);
             }
@@ -130,7 +123,7 @@ public class GameManagerImpl implements GameManager {
         List<MyObjects> myListObjectsbyTypeRem = new ArrayList<>();
 
         for (MyObjects o : this.tienda) {
-            if (o.getTypeObject().getIdType().equals(type)) {
+            if (o.getObjectTypeId().equals(type)) {
                 myListObjectsbyTypeRem.add(o);
                 logger.info("Type " + type + " objects that have been removed are:  " + myListObjectsbyTypeRem);
             }
@@ -141,21 +134,21 @@ public class GameManagerImpl implements GameManager {
         logger.info("There are no objects in the store of type " + type);
     }
 
-    public void addTypeObject(TypeObject typeObject) {
-        this.types.add(typeObject);
-        logger.info("Added a new type of Object (" + typeObject.getIdType() + ")");
+    public void addTypeObject(ObjectType objectType) {
+        this.types.add(objectType);
+        logger.info("Added a new type of Object (" + objectType.getIdType() + ")");
     }
 
-    public List<TypeObject> getAllType() {
+    public List<ObjectType> getAllType() {
         logger.info("We have " + types.size() + " of Objects");
         return this.types;
     }
 
     public double getCoinsObject(String nameObject) {
         for (MyObjects o : this.tienda) {
-            if (o.getName().equals(nameObject)) {
-                logger.info("The Object " + nameObject + " costs " + o.getCoins() + " coins");
-                return o.getCoins();
+            if (o.getObjectName().equals(nameObject)) {
+                logger.info("The Object " + nameObject + " costs " + o.getObjectCoins() + " coins");
+                return o.getObjectCoins();
             }
         }
         logger.info("The Object is not in the Store");
@@ -164,9 +157,9 @@ public class GameManagerImpl implements GameManager {
 
     public String getDescriptionObject(String nameObject) {
         for (MyObjects o : this.tienda) {
-            if (o.getName().equals(nameObject)) {
-                logger.info("The description of Object " + nameObject + " is: " + o.getDescriptionObject());
-                return o.getDescriptionObject();
+            if (o.getObjectName().equals(nameObject)) {
+                logger.info("The description of Object " + nameObject + " is: " + o.getObjectDescription());
+                return o.getObjectDescription();
             }
         }
         logger.info("The Object is not in the store");
@@ -187,7 +180,7 @@ public class GameManagerImpl implements GameManager {
 
     public MyObjects getObject(String idObject) {
         for (MyObjects o : tienda) {
-            if (o.getIdObject().equals(idObject)) {
+            if (o.getObjectId().equals(idObject)) {
                 return o;
             }
             logger.info("getObject(" + idObject + "): " + o);
@@ -195,7 +188,7 @@ public class GameManagerImpl implements GameManager {
         return null;
     }
 
-    /**Characters*/
+    /**Characters**/
     public List<Characters> getAllCharacters(){
         return this.characters;
     }
@@ -218,7 +211,7 @@ public class GameManagerImpl implements GameManager {
         logger.info("The Character " + character.getIdCharacter() + " has been successfully added!");
     }
 
-    /**Dice*/
+    /**Dice**/
     public List<Dice> getAllDice(){
         return this.dados;
     }

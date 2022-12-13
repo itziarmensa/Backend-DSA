@@ -4,22 +4,32 @@ import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.RandomId;
 
 public class User {
+    String userId;
     String userName;
     String userSurname;
     String userBirth;
-    Credentials credentials;
-    String userId;
+    String email;
+    String password;
     public User()
     {
 
     }
 
-    public User(String userName, String userSurname, String userBirth, Credentials credentials) {
-        this.userId= RandomId.getId(); //En principio lo puse así para tener una Id aleatoria. Hay que hablar de si queremos que siga algún orden o algo
+    public User(String userName, String userSurname, String userBirth, String email, String password) {
+        this.userId= RandomId.getId();
         this.userName = userName;
         this.userSurname = userSurname;
         this.userBirth = userBirth;
-        this.credentials = credentials;
+        this.email = email;
+        this.password = password;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -46,23 +56,23 @@ public class User {
         this.userBirth = userBirth;
     }
 
-    public Credentials getCredentials() {
-        return credentials;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCredentials(Credentials credentials) {
-        this.credentials = credentials;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Boolean hasEmail(Credentials credentials){
-        return this.credentials.getEmail().isEqual(credentials.getEmail());
+    public Boolean hasEmail(String email){
+        return this.email.equals(email);
     }
 }

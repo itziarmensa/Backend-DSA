@@ -1,74 +1,62 @@
 package edu.upc.dsa.domain.entity;
 
-import edu.upc.dsa.domain.entity.vo.TypeObject;
-
 public class MyObjects {
 
-    private String idObject;
-    private String name;
-    private String descriptionObject;
-    private double coins;
-    private TypeObject typeObject;
-    private String idTypeObject;
+    String objectId;
+    String objectName;
+    String objectDescription;
+    double objectCoins;
+    String objectTypeId;
 
     public MyObjects() {
     }
 
-    public MyObjects(String idObject, String name, String descriptionObject, String IdTypeObject, double coins) {
-        this.idObject = idObject;
-        this.name = name;
-        this.descriptionObject = descriptionObject;
-        this.idTypeObject = IdTypeObject;
-        this.typeObject = null;
-        this.coins = coins;
+    public MyObjects(String objectId, String objectName, String objectDescription, double objectCoins, String objectTypeId) {
+        this.objectId = objectId;
+        this.objectName = objectName;
+        this.objectDescription = objectDescription;
+        this.objectCoins = objectCoins;
+        this.objectTypeId = objectTypeId;
     }
 
-    public String getIdObject() {
-        return idObject;
+    public String getObjectId() {
+        return objectId;
     }
 
-    public void setIdObject(String idObject) {
-        this.idObject = idObject;
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
-    public String getName() {
-        return name;
+    public String getObjectName() {
+        return objectName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setObjectName(String objectName) {
+        this.objectName = objectName;
     }
 
-    public String getDescriptionObject() {
-        return descriptionObject;
+    public String getObjectDescription() {
+        return objectDescription;
     }
 
-    public void setDescriptionObject(String descriptionObject) {
-        this.descriptionObject = descriptionObject;
+    public void setObjectDescription(String objectDescription) {
+        this.objectDescription = objectDescription;
     }
 
-    public TypeObject getTypeObject() {
-        return typeObject;
+    public double getObjectCoins() {
+        return objectCoins;
     }
 
-    public void setTypeObject(TypeObject typeObject) {
-        this.typeObject = typeObject;
+    public void setObjectCoins(double objectCoins) {
+        this.objectCoins = objectCoins;
     }
 
-    public double getCoins() {
-        return coins;
+    public String getObjectTypeId() {
+        return objectTypeId;
     }
 
-    public void setCoins(double coins) {
-        this.coins = coins;
-    }
-
-    public String getIdTypeObject() {
-        return idTypeObject;
-    }
-
-    public void setIdTypeObject(String idTypeObject) {
-        this.idTypeObject = idTypeObject;
+    public void setObjectTypeId(String objectTypeId) {
+        this.objectTypeId = objectTypeId;
     }
 
 }

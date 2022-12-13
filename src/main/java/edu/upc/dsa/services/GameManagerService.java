@@ -7,13 +7,10 @@ import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.EmailAddressNotValidException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.to.Coins;
-import edu.upc.dsa.domain.entity.to.ObjectReg;
-import edu.upc.dsa.domain.entity.to.TypeReg;
 import edu.upc.dsa.domain.entity.to.UserRegister;
 import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.Dice;
-import edu.upc.dsa.domain.entity.vo.EmailAddress;
-import edu.upc.dsa.domain.entity.vo.TypeObject;
+import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.infraestructure.GameManagerImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,29 +32,27 @@ public class GameManagerService {
     public GameManagerService() throws EmailAddressNotValidException, UserAlreadyExistsException {
         this.gameManager = GameManagerImpl.getInstance();
         if (gameManager.size() == 0) {
-            Credentials credentials1 = new Credentials(new EmailAddress("oscar.boullosa@estudiantat.upc.edu"), "myPassword1");
-            this.gameManager.registerUser("Óscar", "Boullosa Dapena", "08/03/2001", credentials1);
-            Credentials credentials2 = new Credentials(new EmailAddress("itziar.mensa@estudiantat.upc.edu"), "myPassword2");
-            this.gameManager.registerUser("Itziar", "Mensa Minguito", "24/11/2001", credentials2);
+            this.gameManager.registerUser("Óscar", "Boullosa Dapena", "08/03/2001", "oscar.boullosa@estudiantat.upc.edu", "myPassword1");
+            this.gameManager.registerUser("Itziar", "Mensa Minguito", "24/11/2001", "itziar.mensa@estudiantat.upc.edu", "myPassword2");
 
-            TypeObject t1 = new TypeObject("1","xxxx");
+            ObjectType t1 = new ObjectType("1","xxxx");
             gameManager.addTypeObject(t1);
-            TypeObject t2 = new TypeObject("2","xxxx");
+            ObjectType t2 = new ObjectType("2","xxxx");
             gameManager.addTypeObject(t2);
-            TypeObject t3 = new TypeObject("3","xxxx");
+            ObjectType t3 = new ObjectType("3","xxxx");
             gameManager.addTypeObject(t3);
 
-            ObjectReg o1 = new ObjectReg("11","Espada", "Espada con poderes","1", 3.1);
+            MyObjects o1 = new MyObjects("11","Espada", "Espada con poderes", 3.1,"1");
             gameManager.addObject(o1);
-            ObjectReg o2 = new ObjectReg("22","Anillo", "Anillo teletransportador","2", 2.7);
+            MyObjects o2 = new MyObjects("22","Anillo", "Anillo teletransportador", 2.7,"2");
             gameManager.addObject(o2);
-            ObjectReg o3 = new ObjectReg("33","Traje", "Traje invisible", "3",4.5);
+            MyObjects o3 = new MyObjects("33","Traje", "Traje invisible", 4.5, "3");
             gameManager.addObject(o3);
-            ObjectReg o4 = new ObjectReg("44","Gafas", "Gafas visión del futuro","2", 5.25);
+            MyObjects o4 = new MyObjects("44","Gafas", "Gafas visión del futuro", 5.25,"2");
             gameManager.addObject(o4);
-            ObjectReg o5 = new ObjectReg("55","Pistola", "Pistola laser", "2",1.35);
+            MyObjects o5 = new MyObjects("55","Pistola", "Pistola laser", 1.35, "2");
             gameManager.addObject(o5);
-            ObjectReg o6 = new ObjectReg("66","Capa", "Capa voladora", "1",5);
+            MyObjects o6 = new MyObjects("66","Capa", "Capa voladora", 5, "1");
             gameManager.addObject(o6);
 
 
@@ -100,11 +95,11 @@ public class GameManagerService {
     @Path("/user")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response registerUser(UserRegister user) throws UserAlreadyExistsException {
-        if (user.getUserName() == null || user.getUserSurname() == null || user.getBirthDate() == null || user.getCredentials() == null) {
+        if (user.getUserName() == null || user.getUserSurname() == null || user.getUserBirth() == null || user.getEmail() == null || user.getPassword() == null) {
             return Response.status(500).build();
         }
         try {
-            this.gameManager.registerUser(user.getUserName(), user.getUserSurname(), user.getBirthDate(), user.getCredentials());
+            this.gameManager.registerUser(user.getUserName(), user.getUserSurname(), user.getUserBirth(), user.getEmail(), user.getPassword());
         } catch (UserAlreadyExistsException e) {
             return Response.status(406).build();
         }
@@ -121,7 +116,7 @@ public class GameManagerService {
     @Path("/user/login")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response loginUser(Credentials credentials) {
-        if (credentials.getEmail().getEmail() == null || credentials.getPassword() == null) {
+        if (credentials.getEmail() == null || credentials.getPassword() == null) {
             return Response.status(500).build();
         }
         if (!this.gameManager.login(credentials)) {
@@ -133,17 +128,17 @@ public class GameManagerService {
     @POST
     @ApiOperation(value = "add a new Object", notes = "Adds a new object to the store")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful", response = ObjectReg.class),
+            @ApiResponse(code = 200, message = "Successful", response = MyObjects.class),
             @ApiResponse(code = 500, message = "Missing Information")
     })
     @Path("/myObjects")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addObject(ObjectReg objectReg) {
-        if (objectReg.getIdObjectReg() == null || objectReg.getNameReg() == null ||objectReg.getDescriptionObjectReg() == null || objectReg.getCoinsReg() == 0.0 || objectReg.getIdTypeObjectReg() == null) {
+    public Response addObject(MyObjects myObject) {
+        if (myObject.getObjectId() == null || myObject.getObjectName() == null || myObject.getObjectDescription() == null || myObject.getObjectCoins() == 0.0 || myObject.getObjectTypeId() == null) {
             return Response.status(500).build();
         }
-        gameManager.addObject(objectReg);
-        return Response.status(200).entity(objectReg).build();
+        gameManager.addObject(myObject);
+        return Response.status(200).entity(myObject).build();
     }
 
     @GET
@@ -214,19 +209,19 @@ public class GameManagerService {
     @POST
     @ApiOperation(value = "add a new type of Object", notes = "Adds a new type of object")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful", response = TypeObject.class),
+            @ApiResponse(code = 200, message = "Successful", response = ObjectType.class),
             @ApiResponse(code = 500, message = "Missing Information")
     })
     @Path("/myObjects/type")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addTypeObject(TypeReg typeReg) {
-        if (typeReg.getIdTypeReg() == null || typeReg.getDescriptionReg() == null)
+    public Response addTypeObject(ObjectType objectType) {
+        if (objectType.getIdType() == null || objectType.getDescription() == null)
         {
             return Response.status(500).build();
         }
-        TypeObject myTypeObject = new TypeObject(typeReg.getIdTypeReg(),typeReg.getDescriptionReg());
-        this.gameManager.addTypeObject(myTypeObject);
-        return Response.status(200).entity(myTypeObject).build();
+        ObjectType myObjectType = new ObjectType(objectType.getIdType(), objectType.getDescription());
+        this.gameManager.addTypeObject(myObjectType);
+        return Response.status(200).entity(myObjectType).build();
     }
 
     @GET
