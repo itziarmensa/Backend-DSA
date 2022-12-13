@@ -1,12 +1,14 @@
 package edu.upc.dsa.infraestructure;
 
 import edu.upc.dsa.domain.GameManager;
+import edu.upc.dsa.domain.entity.Characters;
 import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.entity.to.ObjectReg;
 import edu.upc.dsa.domain.entity.vo.TypeObject;
 import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
+import edu.upc.dsa.domain.entity.vo.Dice;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -23,6 +25,9 @@ public class GameManagerImpl implements GameManager {
     private List<User> registeredUsers;
     private List<TypeObject> types;
 
+    private List<Dice> dados;
+    private List<Characters> characters;
+
     final static Logger logger = Logger.getLogger(GameManagerImpl.class);
 
     public GameManagerImpl() {
@@ -30,6 +35,8 @@ public class GameManagerImpl implements GameManager {
         this.users = new HashMap<>();
         this.registeredUsers = new ArrayList<>();
         this.types = new ArrayList<>();
+        this.characters = new ArrayList<>();
+        this.dados = new ArrayList<>();
     }
 
     public static GameManager getInstance() {
@@ -37,6 +44,7 @@ public class GameManagerImpl implements GameManager {
         return instance;
     }
 
+    /**User*/
     public int size() {
         int ret = this.users.size();
         logger.info("size " + ret);
@@ -82,6 +90,7 @@ public class GameManagerImpl implements GameManager {
         return false;
     }
 
+    /**Objects*/
     public void addObject(ObjectReg objectReg) {
         MyObjects o = new MyObjects(objectReg.getIdObjectReg(), objectReg.getNameReg(), objectReg.getDescriptionObjectReg(), objectReg.getIdTypeObjectReg(), objectReg.getCoinsReg());
         tienda.add(o);
@@ -184,5 +193,41 @@ public class GameManagerImpl implements GameManager {
             logger.info("getObject(" + idObject + "): " + o);
         }
         return null;
+    }
+
+    /**Characters*/
+    public List<Characters> getAllCharacters(){
+        return this.characters;
+    }
+    public double getNumCharacters(){
+        logger.info("We have " + this.characters.size() + " of Characters");
+        return this.characters.size();
+    }
+    public void addCharacter(Characters character){
+        Dice myDice = new Dice();
+
+        for (Dice d:this.dados) {
+            if(d.getIdD().equals(character.getIdDice())){
+                myDice = d;
+                break;
+            }
+        }
+
+        character.setMyDice(myDice);
+        this.characters.add(character);
+        logger.info("The Character " + character.getIdCharacter() + " has been successfully added!");
+    }
+
+    /**Dice*/
+    public List<Dice> getAllDice(){
+        return this.dados;
+    }
+    public void addDice(Dice dice){
+        this.dados.add(dice);
+        logger.info("The Character " + dice.getIdD() + " has been successfully added!");
+    }
+    public double getNumDice(){
+        logger.info("We have " + this.dados.size() + " of dice");
+        return this.dados.size();
     }
 }

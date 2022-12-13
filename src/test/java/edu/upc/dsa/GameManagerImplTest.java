@@ -1,5 +1,6 @@
 package edu.upc.dsa;
 
+import edu.upc.dsa.domain.entity.Characters;
 import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.GameManager;
 import edu.upc.dsa.domain.entity.to.ObjectReg;
@@ -9,6 +10,7 @@ import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.EmailAddress;
 import edu.upc.dsa.infraestructure.GameManagerImpl;
+import edu.upc.dsa.domain.entity.vo.Dice;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,6 +46,34 @@ public class GameManagerImplTest {
         gameManager.addObject(o5);
         ObjectReg o6 = new ObjectReg("66","Capa", "Capa voladora", "1",5);
         gameManager.addObject(o6);
+
+
+        Characters c1 = new Characters("c1","Mario","hombre","d1",100);
+        gameManager.addCharacter(c1);
+        Characters c2 = new Characters("c2","Donkey Kong","mono","d2",50);
+        gameManager.addCharacter(c2);
+        Characters c3 = new Characters("c3","Diddy Kong","mono","d3",40);
+        gameManager.addCharacter(c3);
+        Characters c4 = new Characters("c4","Yoshi","cocodrilo","d4",80);
+        gameManager.addCharacter(c4);
+        Characters c5 = new Characters("c5","Pum pum","tortuga","d5",20);
+        gameManager.addCharacter(c5);
+        Characters c6 = new Characters("c6","Huesitos","fantasma","d1",60);
+        gameManager.addCharacter(c6);
+        Characters c7 = new Characters("c7","Pum pum","tortuga","d5",20);
+        gameManager.addCharacter(c7);
+
+
+        Dice d1 = new Dice("d1","6-6-6-6");
+        gameManager.addDice(d1);
+        Dice d2 = new Dice("d2","0-0-0-10-10");
+        gameManager.addDice(d2);
+        Dice d3 = new Dice("d3","0-0-7-7-7");
+        gameManager.addDice(d3);
+        Dice d4 = new Dice("d4","0-1-3-3-5-7");
+        gameManager.addDice(d4);
+        Dice d5 = new Dice("d5","0-3-3-3-3-8");
+        gameManager.addDice(d5);
     }
 
     @After
@@ -138,5 +168,35 @@ public class GameManagerImplTest {
         gameManager.deleteListObject("1");
         Assert.assertEquals(3, this.gameManager.getNumObject());
     }
+
+    @Test
+    public void getListCharacters(){
+        List<Characters> c = gameManager.getAllCharacters();
+
+        Assert.assertEquals(7, gameManager.getNumCharacters(),0.5);
+
+        Assert.assertEquals("Mario", c.get(0).getNameCharacter());
+        Assert.assertEquals("Yoshi", c.get(3).getNameCharacter());
+        Assert.assertEquals("Pum pum", c.get(6).getNameCharacter());
+
+        Assert.assertEquals("mono", c.get(1).getDescriptionCharacter());
+        Assert.assertEquals("tortuga", c.get(4).getDescriptionCharacter());
+
+        Assert.assertEquals(20, c.get(4).getCoinsCharacter(),0.5);
+        Assert.assertEquals(60, c.get(5).getCoinsCharacter(),0.5);
+    }
+    @Test
+    public void getListDice(){
+        List<Dice> l = gameManager.getAllDice();
+
+        Assert.assertEquals(5, gameManager.getNumDice(),0.5);
+
+        Assert.assertEquals("d1", l.get(0).getIdD());
+        Assert.assertEquals("d4", l.get(3).getIdD());
+
+        Assert.assertEquals("0-0-7-7-7", l.get(2).getDescriptionD());
+        Assert.assertEquals("0-3-3-3-3-8", l.get(4).getDescriptionD());
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package edu.upc.dsa.services;
 
 import edu.upc.dsa.domain.GameManager;
+import edu.upc.dsa.domain.entity.Characters;
 import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.EmailAddressNotValidException;
@@ -10,6 +11,7 @@ import edu.upc.dsa.domain.entity.to.ObjectReg;
 import edu.upc.dsa.domain.entity.to.TypeReg;
 import edu.upc.dsa.domain.entity.to.UserRegister;
 import edu.upc.dsa.domain.entity.vo.Credentials;
+import edu.upc.dsa.domain.entity.vo.Dice;
 import edu.upc.dsa.domain.entity.vo.EmailAddress;
 import edu.upc.dsa.domain.entity.vo.TypeObject;
 import edu.upc.dsa.infraestructure.GameManagerImpl;
@@ -57,6 +59,34 @@ public class GameManagerService {
             gameManager.addObject(o5);
             ObjectReg o6 = new ObjectReg("66","Capa", "Capa voladora", "1",5);
             gameManager.addObject(o6);
+
+
+            Characters c1 = new Characters("c1","Mario","hombre","d1",100);
+            gameManager.addCharacter(c1);
+            Characters c2 = new Characters("c2","Donkey Kong","mono","d2",50);
+            gameManager.addCharacter(c2);
+            Characters c3 = new Characters("c3","Diddy Kong","mono","d3",40);
+            gameManager.addCharacter(c3);
+            Characters c4 = new Characters("c4","Yoshi","cocodrilo","d4",80);
+            gameManager.addCharacter(c4);
+            Characters c5 = new Characters("c5","Pum pum","tortuga","d5",20);
+            gameManager.addCharacter(c5);
+            Characters c6 = new Characters("c6","Huesitos","fantasma","d1",60);
+            gameManager.addCharacter(c6);
+            Characters c7 = new Characters("c7","Pum pum","tortuga","d5",20);
+            gameManager.addCharacter(c7);
+
+
+            Dice d1 = new Dice("d1","6-6-6-6");
+            gameManager.addDice(d1);
+            Dice d2 = new Dice("d2","0-0-0-10-10");
+            gameManager.addDice(d2);
+            Dice d3 = new Dice("d3","0-0-7-7-7");
+            gameManager.addDice(d3);
+            Dice d4 = new Dice("d4","0-1-3-3-5-7");
+            gameManager.addDice(d4);
+            Dice d5 = new Dice("d5","0-3-3-3-3-8");
+            gameManager.addDice(d5);
         }
     }
 
@@ -227,5 +257,36 @@ public class GameManagerService {
         String des = this.gameManager.getDescriptionObject(name);
         if(des == "") return Response.status(404).entity(des).build();
         return Response.status(200).entity(des).build();
+    }
+
+
+    @GET
+    @ApiOperation(value = "get a List of Characters from the type", notes = "Gets a list of objects of a certain type")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Characters.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @Path("/characters")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getListCharacters() {
+        List<Characters> myCharacters = this.gameManager.getAllCharacters();
+        GenericEntity<List<Characters>> entity = new GenericEntity<List<Characters>>(myCharacters) {
+        };
+        return Response.status(200).entity(entity).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get a List of Dice from the type", notes = "Gets a list of objects of a certain type")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Characters.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @Path("/dice")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getListDice() {
+        List<Dice> myDice = this.gameManager.getAllDice();
+        GenericEntity<List<Dice>> entity = new GenericEntity<List<Dice>>(myDice) {
+        };
+        return Response.status(200).entity(entity).build();
     }
 }
