@@ -27,20 +27,36 @@
                     $('#results').empty();
                     for (var i = 0; i < json.length; ++i) {
                         $('#results').append('<tr>' +
-                            '<td>' + json[i].name + '</td>' +
-                            '<td>' + json[i].descriptionObject + '</td>' +
-                            '<td>' + json[i].coins + '</td>' +
-                            '<td>' + json[i].objectType.description + '</td>' +
+                            '<td>' + json[i].objectName + '</td>' +
+                            '<td>' + json[i].objectDescription + '</td>' +
+                            '<td>' + json[i].objectCoins + '</td>' +
+                            '<td>' + json[i].objectTypeId + '</td>' +
                             '</tr>');
                     }
+
                 },
                 error: function (error) {
                     alert("Not able to create the table. Try again");
                 }
             });
 
-            $("#table").click(function (){
+            /*$("#table").click(function (){
                window.location.href="juego.html";
+            });*/
+
+            const tableCells = document.querySelectorAll("#table");
+
+            tableCells.forEach(function (cell){
+                cell.addEventListener("click", function (){
+                    // obtenemos la celda en la que se hizo clic
+                    var celda = event.target;
+
+                    // obtenemos el contenido de la celda
+                    var contenido = celda.innerHTML;
+
+                    // mostramos el contenido de la celda en la consola
+                    alert(contenido);
+                    });
             });
 
         });
