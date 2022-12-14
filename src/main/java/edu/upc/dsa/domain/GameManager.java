@@ -4,6 +4,7 @@ import edu.upc.dsa.domain.entity.Characters;
 import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
+import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.Dice;
 
@@ -28,6 +29,9 @@ public interface GameManager {
     public List<ObjectType> getAllType();
     public double getCoinsObject(String nameObject);
     public String getDescriptionObject(String nameObject);
+    public void buyObject(String email, String objectId) throws UserNotExistsException;
+
+    public List<MyObjects> getObjectsByUser(String email);
 
     /**Characters*/
     public List<Characters> getAllCharacters();

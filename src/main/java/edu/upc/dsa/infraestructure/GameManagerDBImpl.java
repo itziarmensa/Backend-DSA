@@ -6,6 +6,7 @@ import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
+import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.Dice;
 import edu.upc.eetac.dsa.*;
@@ -26,6 +27,7 @@ public class GameManagerDBImpl implements GameManager {
 
     private List<Dice> dados;
     private List<Characters> characters;
+    private HashMap<String, List<MyObjects>> userObjects;
 
     final static Logger logger = Logger.getLogger(GameManagerDBImpl.class);
 
@@ -37,6 +39,7 @@ public class GameManagerDBImpl implements GameManager {
         this.types = new ArrayList<>();
         this.characters = new ArrayList<>();
         this.dados = new ArrayList<>();
+        this.userObjects = new HashMap<>();
     }
 
     public static GameManager getInstance() {
@@ -46,6 +49,7 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public int size() {
+        getUsers();
         int ret = this.users.size();
         logger.info("size " + ret);
         return ret;
@@ -166,6 +170,30 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public String getDescriptionObject(String nameObject) {
         return null;
+    }
+
+    @Override
+    public void buyObject(String email, String objectId) throws UserNotExistsException {
+        getUsers();
+        Boolean found = false;
+        for (User user : this.users.values()) {
+            if (user.hasEmail(email)) {
+                found = true;
+                if (!userObjects.containsKey(email))
+                {
+                    List<MyObjects> myObjects = new ArrayList<>();
+                    userObjects.put(email, myObjects);
+                }
+                MyObjects myObject = getObject(objectId);
+                userObjects.get(user.getEmail()).add(myObject);
+            }
+        }
+        if (!found) { throw new UserNotExistsException(); }
+    }
+
+    @Override
+    public List<MyObjects> getObjectsByUser(String email) {
+        return userObjects.get(email);
     }
 
     @Override

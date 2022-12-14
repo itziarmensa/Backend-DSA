@@ -4,15 +4,14 @@ import edu.upc.dsa.domain.GameManager;
 import edu.upc.dsa.domain.entity.Characters;
 import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.entity.User;
-import edu.upc.dsa.domain.entity.exceptions.EmailAddressNotValidException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
+import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.to.Coins;
 import edu.upc.dsa.domain.entity.to.UserRegister;
 import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.Dice;
 import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.infraestructure.GameManagerDBImpl;
-import edu.upc.dsa.infraestructure.GameManagerImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -30,60 +29,8 @@ public class GameManagerService {
 
     private GameManager gameManager;
 
-    public GameManagerService() throws EmailAddressNotValidException, UserAlreadyExistsException {
+    public GameManagerService() {
         this.gameManager = GameManagerDBImpl.getInstance();
-        if (gameManager.size() == 0) {
-            this.gameManager.registerUser("Óscar", "Boullosa Dapena", "08/03/2001", "oscar.boullosa@estudiantat.upc.edu", "myPassword1");
-            this.gameManager.registerUser("Itziar", "Mensa Minguito", "24/11/2001", "itziar.mensa@estudiantat.upc.edu", "myPassword2");
-
-            ObjectType t1 = new ObjectType("1","xxxx");
-            gameManager.addTypeObject(t1);
-            ObjectType t2 = new ObjectType("2","xxxx");
-            gameManager.addTypeObject(t2);
-            ObjectType t3 = new ObjectType("3","xxxx");
-            gameManager.addTypeObject(t3);
-
-            MyObjects o1 = new MyObjects("11","Espada", "Espada con poderes", 3.1,"1");
-            gameManager.addObject(o1);
-            MyObjects o2 = new MyObjects("22","Anillo", "Anillo teletransportador", 2.7,"2");
-            gameManager.addObject(o2);
-            MyObjects o3 = new MyObjects("33","Traje", "Traje invisible", 4.5, "3");
-            gameManager.addObject(o3);
-            MyObjects o4 = new MyObjects("44","Gafas", "Gafas visión del futuro", 5.25,"2");
-            gameManager.addObject(o4);
-            MyObjects o5 = new MyObjects("55","Pistola", "Pistola laser", 1.35, "2");
-            gameManager.addObject(o5);
-            MyObjects o6 = new MyObjects("66","Capa", "Capa voladora", 5, "1");
-            gameManager.addObject(o6);
-
-
-            Characters c1 = new Characters("c1","Mario","hombre","d1",100);
-            gameManager.addCharacter(c1);
-            Characters c2 = new Characters("c2","Donkey Kong","mono","d2",50);
-            gameManager.addCharacter(c2);
-            Characters c3 = new Characters("c3","Diddy Kong","mono","d3",40);
-            gameManager.addCharacter(c3);
-            Characters c4 = new Characters("c4","Yoshi","cocodrilo","d4",80);
-            gameManager.addCharacter(c4);
-            Characters c5 = new Characters("c5","Pum pum","tortuga","d5",20);
-            gameManager.addCharacter(c5);
-            Characters c6 = new Characters("c6","Huesitos","fantasma","d1",60);
-            gameManager.addCharacter(c6);
-            Characters c7 = new Characters("c7","Pum pum","tortuga","d5",20);
-            gameManager.addCharacter(c7);
-
-
-            Dice d1 = new Dice("d1","6-6-6-6");
-            gameManager.addDice(d1);
-            Dice d2 = new Dice("d2","0-0-0-10-10");
-            gameManager.addDice(d2);
-            Dice d3 = new Dice("d3","0-0-7-7-7");
-            gameManager.addDice(d3);
-            Dice d4 = new Dice("d4","0-1-3-3-5-7");
-            gameManager.addDice(d4);
-            Dice d5 = new Dice("d5","0-3-3-3-3-8");
-            gameManager.addDice(d5);
-        }
     }
 
     @POST
@@ -255,6 +202,36 @@ public class GameManagerService {
         return Response.status(200).entity(des).build();
     }
 
+    @PUT
+    @ApiOperation(value = "buy an Object", notes = "Buys an object for a user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful"),
+            @ApiResponse(code = 500, message = "Error Buying")
+    })
+    @Path("/user/{email}/{objectId}")
+    public Response buyObject(@PathParam("email") String email, @PathParam("objectId") String objectId) throws UserNotExistsException {
+        try {
+            this.gameManager.buyObject(email, objectId);
+        }
+        catch (UserNotExistsException e) {
+            return Response.status(500).build();
+        }
+        return Response.status(200).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get all Objects from a User", notes = "Gets all the objects that a user has bought")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = MyObjects.class, responseContainer = "List"),
+    })
+    @Path("/user/{email}/myObjects")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getObjectsByUser(@PathParam("email") String email) {
+        List<MyObjects> objects = this.gameManager.getObjectsByUser(email);
+        GenericEntity<List<MyObjects>> entity = new GenericEntity<List<MyObjects>>(objects) {
+        };
+        return Response.status(200).entity(entity).build();
+    }
 
     @GET
     @ApiOperation(value = "get a List of Characters from the type", notes = "Gets a list of objects of a certain type")

@@ -6,23 +6,22 @@ import edu.upc.dsa.domain.GameManager;
 import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.domain.entity.exceptions.EmailAddressNotValidException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
-import edu.upc.dsa.domain.entity.vo.Credentials;
-import edu.upc.dsa.infraestructure.GameManagerImpl;
 import edu.upc.dsa.domain.entity.vo.Dice;
+import edu.upc.dsa.infraestructure.GameManagerDBImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
 
-public class GameManagerImplTest {
+public class GameManagerDBImplTest {
 
     GameManager gameManager;
 
 
     @Before
     public void setUp() {
-        this.gameManager=new GameManagerImpl();
+        this.gameManager=new GameManagerDBImpl();
 
         ObjectType t1 = new ObjectType("1","xxxx");
         gameManager.addTypeObject(t1);
@@ -91,7 +90,7 @@ public class GameManagerImplTest {
         Assert.assertEquals(3,this.gameManager.numUsersRegistered());
     }
     @Test
-    public void EmailAddressNotValidExceptionTest() {
+    public void EmailAddressNotValidExceptionTest() throws EmailAddressNotValidException {
         Assert.assertThrows(EmailAddressNotValidException.class,()->this.gameManager.registerUser("Lluc","Feixa","14/11/2001","lluc.feixa", "myPassword4"));
     }
 
