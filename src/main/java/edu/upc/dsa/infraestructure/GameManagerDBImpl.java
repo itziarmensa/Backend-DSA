@@ -75,11 +75,14 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public void registerUser(String userName, String userSurname, String birthDate, String email, String password) throws UserAlreadyExistsException {
+        logger.info("Trying to register the user with information: (" + userName + ", " + userSurname + ", " + birthDate + ", {" + email + ", " + password + "})");
         if (userExistsByEmail(email)) {
+            logger.warn("Register not possible, user already exists!");
             throw new UserAlreadyExistsException();
         }
         User user = new User(userName, userSurname, birthDate, email, password);
         this.session.save(user);
+        logger.info("Register of user with email " + user.getEmail() + " has been successfully done!");
     }
 
     @Override
@@ -88,9 +91,11 @@ public class GameManagerDBImpl implements GameManager {
         for(Object user : usersList) {
             User user1 = (User) user;
             if(user1.getEmail().equals(credentials.getEmail()) && user1.getPassword().equals(credentials.getPassword())) {
+                logger.info("Login of user with email " + user1.getEmail() + " has been successfully done!");
                 return true;
             }
         }
+        logger.info("Login of user failed");
         return false;
     }
 
@@ -98,6 +103,7 @@ public class GameManagerDBImpl implements GameManager {
     public void addObject(MyObjects myObject) {
         MyObjects o = new MyObjects(myObject.getObjectId(), myObject.getObjectName(), myObject.getObjectDescription(), myObject.getObjectCoins(), myObject.getObjectTypeId());
         this.session.save(o);
+        logger.info("Object " + o.getObjectName() + " has been successfully added to the store");
     }
 
     @Override
@@ -135,6 +141,7 @@ public class GameManagerDBImpl implements GameManager {
                 break;
             }
         }
+        logger.info("The Object " + objectId + " has been successfully removed!");
     }
 
     @Override
@@ -186,13 +193,18 @@ public class GameManagerDBImpl implements GameManager {
                 }
                 MyObjects myObject = getObject(objectId);
                 userObjects.get(user.getEmail()).add(myObject);
+                logger.info("The Object " + objectId + " has been successfully bought by the user with email " + email + "!");
             }
         }
-        if (!found) { throw new UserNotExistsException(); }
+        if (!found) {
+            logger.info("User with email " + email + " does not exist!");
+            throw new UserNotExistsException();
+        }
     }
 
     @Override
     public List<MyObjects> getObjectsByUser(String email) {
+        logger.info("User with email " + email + " has requested for his/her objects");
         return userObjects.get(email);
     }
 
