@@ -70,7 +70,7 @@
         </dependency>
         <dependency>
             <groupId>edu.upc.eetac.dsa</groupId>
-            <artifactId>edu.upc.eetac.dsa</artifactId>
+            <artifactId>DAO</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/DAO-1.0-SNAPSHOT.jar</systemPath>
