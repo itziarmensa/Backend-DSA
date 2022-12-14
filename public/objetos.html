@@ -40,10 +40,6 @@
                 }
             });
 
-            /*$("#table").click(function (){
-               window.location.href="juego.html";
-            });*/
-
             const tableCells = document.querySelectorAll("#table");
 
             tableCells.forEach(function (cell){
@@ -53,9 +49,6 @@
 
                     // obtenemos el contenido de la celda
                     var contenido = celda.innerHTML;
-
-                    // mostramos el contenido de la celda en la consola
-                    //alert(contenido);
 
                     localStorage.setItem('objetoElegido',contenido);
 
