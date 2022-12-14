@@ -55,7 +55,11 @@
                     var contenido = celda.innerHTML;
 
                     // mostramos el contenido de la celda en la consola
-                    alert(contenido);
+                    //alert(contenido);
+
+                    localStorage.setItem('objetoElegido',contenido);
+
+                    window.location.href="juego.html";
                     });
             });
 
