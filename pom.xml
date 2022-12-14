@@ -68,6 +68,20 @@
             <artifactId>commons-validator</artifactId>
             <version>1.7</version>
         </dependency>
+        <dependency>
+            <groupId>edu.upc.eetac.dsa</groupId>
+            <artifactId>edu.upc.eetac.dsa</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/DAO-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>2.1.2</version>
+        </dependency>
 
 
     </dependencies>

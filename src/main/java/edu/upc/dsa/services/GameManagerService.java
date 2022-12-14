@@ -11,6 +11,7 @@ import edu.upc.dsa.domain.entity.to.UserRegister;
 import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.Dice;
 import edu.upc.dsa.domain.entity.ObjectType;
+import edu.upc.dsa.infraestructure.GameManagerDBImpl;
 import edu.upc.dsa.infraestructure.GameManagerImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +31,7 @@ public class GameManagerService {
     private GameManager gameManager;
 
     public GameManagerService() throws EmailAddressNotValidException, UserAlreadyExistsException {
-        this.gameManager = GameManagerImpl.getInstance();
+        this.gameManager = GameManagerDBImpl.getInstance();
         if (gameManager.size() == 0) {
             this.gameManager.registerUser("Óscar", "Boullosa Dapena", "08/03/2001", "oscar.boullosa@estudiantat.upc.edu", "myPassword1");
             this.gameManager.registerUser("Itziar", "Mensa Minguito", "24/11/2001", "itziar.mensa@estudiantat.upc.edu", "myPassword2");
