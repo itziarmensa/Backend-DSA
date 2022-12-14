@@ -217,7 +217,7 @@ public class GameManagerImpl implements GameManager {
     }
     public void addDice(Dice dice){
         this.dados.add(dice);
-        logger.info("The Character " + dice.getIdD() + " has been successfully added!");
+        logger.info("The dice " + dice.getIdD() + " has been successfully added!");
     }
     public double getNumDice(){
         logger.info("We have " + this.dados.size() + " of dice");

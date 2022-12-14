@@ -17,44 +17,50 @@
 
         $(document).ready(function () {
 
-            $.ajax({
-                type: 'GET',
-                url: 'dsaApp/gameManager/myObjects',
-                data: {},
-                dataType: 'text',
-                success: function (data) {
-                    var json = $.parseJSON(data);
-                    $('#results').empty();
-                    for (var i = 0; i < json.length; ++i) {
-                        $('#results').append('<tr>' +
-                            '<td>' + json[i].objectName + '</td>' +
-                            '<td>' + json[i].objectDescription + '</td>' +
-                            '<td>' + json[i].objectCoins + '</td>' +
-                            '<td>' + json[i].objectTypeId + '</td>' +
-                            '</tr>');
+            if(sessionStorage.getItem('mailUsuario') != null){
+                $.ajax({
+                    type: 'GET',
+                    url: 'dsaApp/gameManager/myObjects',
+                    data: {},
+                    dataType: 'text',
+                    success: function (data) {
+                        var json = $.parseJSON(data);
+                        $('#results').empty();
+                        for (var i = 0; i < json.length; ++i) {
+                            $('#results').append('<tr>' +
+                                '<td>' + json[i].objectName + '</td>' +
+                                '<td>' + json[i].objectDescription + '</td>' +
+                                '<td>' + json[i].objectCoins + '</td>' +
+                                '<td>' + json[i].objectTypeId + '</td>' +
+                                '</tr>');
+                        }
+
+                    },
+                    error: function (error) {
+                        alert("Not able to create the table. Try again");
                     }
+                });
 
-                },
-                error: function (error) {
-                    alert("Not able to create the table. Try again");
-                }
-            });
+                const tableCells = document.querySelectorAll("#table");
 
-            const tableCells = document.querySelectorAll("#table");
+                tableCells.forEach(function (cell){
+                    cell.addEventListener("click", function (){
+                        // obtenemos la celda en la que se hizo clic
+                        var celda = event.target;
 
-            tableCells.forEach(function (cell){
-                cell.addEventListener("click", function (){
-                    // obtenemos la celda en la que se hizo clic
-                    var celda = event.target;
+                        // obtenemos el contenido de la celda
+                        var contenido = celda.innerHTML;
 
-                    // obtenemos el contenido de la celda
-                    var contenido = celda.innerHTML;
+                        localStorage.setItem('objetoElegido',contenido);
 
-                    localStorage.setItem('objetoElegido',contenido);
-
-                    window.location.href="juego.html";
+                        window.location.href="juego.html";
                     });
-            });
+                });
+            }else {
+                window.location.href="index.html";
+            }
+
+
 
         });
 

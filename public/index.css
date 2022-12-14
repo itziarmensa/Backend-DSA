@@ -831,13 +831,25 @@ footer .container{
 }
 
 .containerJuego{
-    margin-top: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     flex-direction: column;
     background-color: black;
+    height: 100vh;
+}
+
+#ajugar{
+    color: white;
+}
+
+#personaje{
+    color: white;
+}
+
+#objeto{
+    color: white;
 }
 
 

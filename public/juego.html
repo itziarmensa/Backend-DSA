@@ -15,16 +15,21 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            const objetoElegido = localStorage.getItem('objetoElegido');
-            const personajeElegido = localStorage.getItem('personajeElegido');
-            document.getElementById('objeto').innerHTML = "Vas a jugar con el objeto: " + objetoElegido;
-            document.getElementById('personaje').innerHTML = "Vas a jugar con el personaje: " + personajeElegido;
+            if(sessionStorage.getItem('mailUsuario')!= null){
+                const objetoElegido = localStorage.getItem('objetoElegido');
+                const personajeElegido = localStorage.getItem('personajeElegido');
+                document.getElementById('objeto').innerHTML = "Vas a jugar con el objeto: " + objetoElegido;
+                document.getElementById('personaje').innerHTML = "Vas a jugar con el personaje: " + personajeElegido;
+            }else {
+                window.location.href="index.html";
+            }
+
         });
     </script>
 </head>
 <body>
 <div class="containerJuego">
-    <h1>¡A jugar!</h1>
+    <h1 id="ajugar">¡A jugar!</h1>
     <h5 id="personaje"></h5>
     <h5 id="objeto"></h5>
 </div>

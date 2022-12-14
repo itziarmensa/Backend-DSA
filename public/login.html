@@ -28,6 +28,7 @@
           url: 'dsaApp/gameManager/user/login',
           data: JSON.stringify({'email': mailLogin, 'password': passwordLogin}),
           success: function (result) {
+            sessionStorage.setItem('mailUsuario',mailLogin);
             window.location.href='personajes.html';
           },
           error: function (error) {
