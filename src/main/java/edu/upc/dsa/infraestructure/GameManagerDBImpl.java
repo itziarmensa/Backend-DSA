@@ -56,6 +56,7 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     public void getUsers() {
+        this.users.clear();
         List<Object> usersList= this.session.findAll(User.class);
         for(int i=0; i<usersList.size();i++) {
             User user = (User) usersList.get(i);
@@ -118,6 +119,7 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public List<MyObjects> getTienda() {
+        this.tienda.clear();
         List<Object> myobjects= this.session.findAll(MyObjects.class);
         for(int i=0; i<myobjects.size();i++){
             MyObjects myobject = (MyObjects) myobjects.get(i);
@@ -146,12 +148,32 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public List<MyObjects> getListObject(String type) {
-        return null;
+        List<MyObjects> myListObjectsbyType = new ArrayList<>();
+
+        for (MyObjects o : this.tienda) {
+            if (o.getObjectTypeId().equals(type)) {
+                myListObjectsbyType.add(o);
+                logger.info("The Objects that are of type " + type + " are:  " + myListObjectsbyType);
+            }
+        }
+        logger.info("There are no objects in the store of type " + type);
+        return myListObjectsbyType;
     }
 
     @Override
     public void deleteListObject(String type) {
+        List<MyObjects> myListObjectsbyTypeRem = new ArrayList<>();
 
+        for (MyObjects o : this.tienda) {
+            if (o.getObjectTypeId().equals(type)) {
+                myListObjectsbyTypeRem.add(o);
+                logger.info("Type " + type + " objects that have been removed are:  " + myListObjectsbyTypeRem);
+            }
+        }
+        for (MyObjects oRem : myListObjectsbyTypeRem) {
+            tienda.remove(oRem);
+        }
+        logger.info("There are no objects in the store of type " + type);
     }
 
     @Override
@@ -161,6 +183,7 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public List<ObjectType> getAllType() {
+        this.types.clear();
         List<Object> objectTypes= this.session.findAll(ObjectType.class);
         for(int i=0; i<objectTypes.size();i++){
             ObjectType objectType = (ObjectType) objectTypes.get(i);
@@ -171,11 +194,25 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public double getCoinsObject(String nameObject) {
-        return 0;
+        for (MyObjects o : this.tienda) {
+            if (o.getObjectName().equals(nameObject)) {
+                logger.info("The Object " + nameObject + " costs " + o.getObjectCoins() + " coins");
+                return o.getObjectCoins();
+            }
+        }
+        logger.info("The Object is not in the Store");
+        return 0.0;
     }
 
     @Override
     public String getDescriptionObject(String nameObject) {
+        for (MyObjects o : this.tienda) {
+            if (o.getObjectName().equals(nameObject)) {
+                logger.info("The description of Object " + nameObject + " is: " + o.getObjectDescription());
+                return o.getObjectDescription();
+            }
+        }
+        logger.info("The Object is not in the store");
         return null;
     }
 
@@ -210,31 +247,45 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public List<Characters> getAllCharacters() {
-        return null;
+        return this.characters;
     }
 
     @Override
     public double getNumCharacters() {
-        return 0;
+        logger.info("We have " + this.characters.size() + " of Characters");
+        return this.characters.size();
     }
 
     @Override
-    public void addCharacter(Characters c) {
+    public void addCharacter(Characters character) {
+        Dice myDice = new Dice();
 
+        for (Dice d:this.dados) {
+            if(d.getIdD().equals(character.getIdDice())){
+                myDice = d;
+                break;
+            }
+        }
+
+        character.setMyDice(myDice);
+        this.characters.add(character);
+        logger.info("The Character " + character.getIdCharacter() + " has been successfully added!");
     }
 
     @Override
     public List<Dice> getAllDice() {
-        return null;
+        return this.dados;
     }
 
     @Override
     public void addDice(Dice dice) {
-
+        this.dados.add(dice);
+        logger.info("The dice " + dice.getIdD() + " has been successfully added!");
     }
 
     @Override
     public double getNumDice() {
-        return 0;
+        logger.info("We have " + this.dados.size() + " of dice");
+        return this.dados.size();
     }
 }

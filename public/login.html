@@ -29,7 +29,7 @@
           data: JSON.stringify({'email': mailLogin, 'password': passwordLogin}),
           success: function (result) {
             sessionStorage.setItem('mailUsuario',mailLogin);
-            window.location.href='personajes.html';
+            window.location.href="usuario.html";
           },
           error: function (error) {
             if (mailLogin == "" || passwordLogin == "")
