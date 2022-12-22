@@ -9,6 +9,7 @@ import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.Dice;
+import edu.upc.dsa.domain.entity.vo.UserMyObjects;
 import edu.upc.eetac.dsa.*;
 import org.apache.log4j.Logger;
 
@@ -223,13 +224,16 @@ public class GameManagerDBImpl implements GameManager {
         for (User user : this.users.values()) {
             if (user.hasEmail(email)) {
                 found = true;
+                String userId = user.getUserId();
                 if (!userObjects.containsKey(email))
                 {
                     List<MyObjects> myObjects = new ArrayList<>();
-                    userObjects.put(email, myObjects);
+                    userObjects.put(userId, myObjects);
                 }
                 MyObjects myObject = getObject(objectId);
-                userObjects.get(user.getEmail()).add(myObject);
+                userObjects.get(user.getUserId()).add(myObject);
+                UserMyObjects userMyObjects = new UserMyObjects(userId, objectId);
+                this.session.save(userMyObjects);
                 logger.info("The Object " + objectId + " has been successfully bought by the user with email " + email + "!");
             }
         }
@@ -258,18 +262,8 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public void addCharacter(Characters character) {
-        Dice myDice = new Dice();
-
-        for (Dice d:this.dados) {
-            if(d.getIdD().equals(character.getIdDice())){
-                myDice = d;
-                break;
-            }
-        }
-
-        character.setMyDice(myDice);
         this.characters.add(character);
-        logger.info("The Character " + character.getIdCharacter() + " has been successfully added!");
+        logger.info("The Character " + character.getCharacterId() + " has been successfully added!");
     }
 
     @Override
@@ -280,7 +274,7 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public void addDice(Dice dice) {
         this.dados.add(dice);
-        logger.info("The dice " + dice.getIdD() + " has been successfully added!");
+        logger.info("The dice " + dice.getDiceId() + " has been successfully added!");
     }
 
     @Override

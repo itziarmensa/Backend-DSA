@@ -1,4 +1,4 @@
-create table User
+create table user
 (
     userId      varchar(50) not null
         primary key,

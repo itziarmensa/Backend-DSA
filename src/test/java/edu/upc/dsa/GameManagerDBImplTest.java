@@ -169,15 +169,15 @@ public class GameManagerDBImplTest {
 
         Assert.assertEquals(7, gameManager.getNumCharacters(),0.5);
 
-        Assert.assertEquals("Mario", c.get(0).getNameCharacter());
-        Assert.assertEquals("Yoshi", c.get(3).getNameCharacter());
-        Assert.assertEquals("Pum pum", c.get(6).getNameCharacter());
+        Assert.assertEquals("Mario", c.get(0).getCharacterName());
+        Assert.assertEquals("Yoshi", c.get(3).getCharacterName());
+        Assert.assertEquals("Pum pum", c.get(6).getCharacterName());
 
-        Assert.assertEquals("mono", c.get(1).getDescriptionCharacter());
-        Assert.assertEquals("tortuga", c.get(4).getDescriptionCharacter());
+        Assert.assertEquals("mono", c.get(1).getCharacterDescription());
+        Assert.assertEquals("tortuga", c.get(4).getCharacterDescription());
 
-        Assert.assertEquals(20, c.get(4).getCoinsCharacter(),0.5);
-        Assert.assertEquals(60, c.get(5).getCoinsCharacter(),0.5);
+        Assert.assertEquals(20, c.get(4).getCharacterCoins(),0.5);
+        Assert.assertEquals(60, c.get(5).getCharacterCoins(),0.5);
     }
     @Test
     public void getListDice(){
@@ -185,11 +185,11 @@ public class GameManagerDBImplTest {
 
         Assert.assertEquals(5, gameManager.getNumDice(),0.5);
 
-        Assert.assertEquals("d1", l.get(0).getIdD());
-        Assert.assertEquals("d4", l.get(3).getIdD());
+        Assert.assertEquals("d1", l.get(0).getDiceId());
+        Assert.assertEquals("d4", l.get(3).getDiceId());
 
-        Assert.assertEquals("0-0-7-7-7", l.get(2).getDescriptionD());
-        Assert.assertEquals("0-3-3-3-3-8", l.get(4).getDescriptionD());
+        Assert.assertEquals("0-0-7-7-7", l.get(2).getDiceDescription());
+        Assert.assertEquals("0-3-3-3-3-8", l.get(4).getDiceDescription());
     }
 
 

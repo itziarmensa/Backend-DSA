@@ -2,30 +2,30 @@ package edu.upc.dsa.domain.entity.vo;
 
 public class Dice {
 
-    private String idD;
-    private String descriptionD;
+    private String diceId;
+    private String diceDescription;
 
     public Dice() {
     }
 
-    public Dice(String idD, String descriptionD) {
-        this.idD = idD;
-        this.descriptionD = descriptionD;
+    public Dice(String diceId, String diceDescription) {
+        this.diceId = diceId;
+        this.diceDescription = diceDescription;
     }
 
-    public String getIdD() {
-        return idD;
+    public String getDiceId() {
+        return diceId;
     }
 
-    public void setIdD(String idD) {
-        this.idD = idD;
+    public void setDiceId(String diceId) {
+        this.diceId = diceId;
     }
 
-    public String getDescriptionD() {
-        return descriptionD;
+    public String getDiceDescription() {
+        return diceDescription;
     }
 
-    public void setDescriptionD(String descriptionD) {
-        this.descriptionD = descriptionD;
+    public void setDiceDescription(String diceDescription) {
+        this.diceDescription = diceDescription;
     }
 }

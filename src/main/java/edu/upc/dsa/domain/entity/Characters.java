@@ -1,74 +1,61 @@
 package edu.upc.dsa.domain.entity;
 
-import edu.upc.dsa.domain.entity.vo.Dice;
-
-
 public class Characters {
 
-    private String idCharacter;
-    private String nameCharacter;
-    private String descriptionCharacter;
-    private Dice myDice;
-    private String idDice;
-    private double coinsCharacter;
+    private String characterId;
+    private String characterName;
+    private String characterDescription;
+    private double characterCoins;
+    private String diceId;
 
     public Characters() {
     }
 
-    public Characters(String idCharacter, String nameCharacter, String descriptionCharacter, String idDice, double coinsCharacter) {
-        this.idCharacter = idCharacter;
-        this.nameCharacter = nameCharacter;
-        this.descriptionCharacter = descriptionCharacter;
-        this.idDice = idDice;
-        this.myDice = null;
-        this.coinsCharacter = coinsCharacter;
+    public Characters(String characterId, String characterName, String characterDescription, String diceId, double characterCoins) {
+        this.characterId = characterId;
+        this.characterName = characterName;
+        this.characterDescription = characterDescription;
+        this.diceId = diceId;
+        this.characterCoins = characterCoins;
     }
 
-    public String getIdCharacter() {
-        return idCharacter;
+    public String getCharacterId() {
+        return characterId;
     }
 
-    public void setIdCharacter(String idCharacter) {
-        this.idCharacter = idCharacter;
+    public void setCharacterId(String characterId) {
+        this.characterId = characterId;
     }
 
-    public String getNameCharacter() {
-        return nameCharacter;
+    public String getCharacterName() {
+        return characterName;
     }
 
-    public void setNameCharacter(String nameCharacter) {
-        this.nameCharacter = nameCharacter;
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
     }
 
-    public String getDescriptionCharacter() {
-        return descriptionCharacter;
+    public String getCharacterDescription() {
+        return characterDescription;
     }
 
-    public void setDescriptionCharacter(String descriptionCharacter) {
-        this.descriptionCharacter = descriptionCharacter;
+    public void setCharacterDescription(String characterDescription) {
+        this.characterDescription = characterDescription;
     }
 
-    public Dice getMyDice() {
-        return myDice;
+    public double getCharacterCoins() {
+        return characterCoins;
     }
 
-    public void setMyDice(Dice myDice) {
-        this.myDice = myDice;
+    public void setCharacterCoins(double characterCoins) {
+        this.characterCoins = characterCoins;
     }
 
-    public double getCoinsCharacter() {
-        return coinsCharacter;
+    public String getDiceId() {
+        return diceId;
     }
 
-    public void setCoinsCharacter(double coinsCharacter) {
-        this.coinsCharacter = coinsCharacter;
-    }
-
-    public String getIdDice() {
-        return idDice;
-    }
-
-    public void setIdDice(String idDice) {
-        this.idDice = idDice;
+    public void setDiceId(String diceId) {
+        this.diceId = diceId;
     }
 }

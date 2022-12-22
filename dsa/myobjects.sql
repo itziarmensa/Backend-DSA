@@ -1,4 +1,4 @@
-create table MyObjects
+create table myobjects
 (
     objectId          varchar(50)  not null
         primary key,
@@ -6,10 +6,10 @@ create table MyObjects
     objectDescription varchar(200) null,
     objectCoins       double       null,
     objectTypeId      varchar(50)  null,
-    constraint MyObjects_ibfk_1
-        foreign key (objectTypeId) references ObjectType (objectTypeId)
+    constraint myobjects_ibfk_1
+        foreign key (objectTypeId) references objecttype (objectTypeId)
 );
 
 create index objectTypeId
-    on MyObjects (objectTypeId);
+    on myobjects (objectTypeId);
 
