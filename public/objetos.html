@@ -39,21 +39,7 @@
                     }
                 });
 
-                const tableCells = document.querySelectorAll("#table");
 
-                tableCells.forEach(function (cell){
-                    cell.addEventListener("click", function (){
-                        // obtenemos la celda en la que se hizo clic
-                        var celda = event.target;
-
-                        // obtenemos el contenido de la celda
-                        var contenido = celda.innerHTML;
-
-                        localStorage.setItem('objetoElegido',contenido);
-
-                        window.location.href="juego.html";
-                    });
-                });
             }else {
                 window.location.href="index.html";
             }
@@ -68,7 +54,7 @@
 <body style="background-color: black">
 
 <div class="container3">
-    <H1 id="eligeObjeto">¡Elige tu objeto!</H1>
+    <H1 id="eligeObjeto">¡Tu lista de objetos!</H1>
 
 </div>
 
