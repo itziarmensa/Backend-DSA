@@ -13,43 +13,8 @@
     <link rel="stylesheet" href="index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script>
+    <script src="js/objetos.js"></script>
 
-        $(document).ready(function () {
-
-            if(sessionStorage.getItem('mailUsuario') != null){
-                $.ajax({
-                    type: 'GET',
-                    url: 'dsaApp/gameManager/user/' + sessionStorage.getItem("mailUsuario") + '/myObjects',
-                    dataType: 'text',
-                    success: function (data) {
-                        var json = $.parseJSON(data);
-                        $('#results').empty();
-                        for (var i = 0; i < json.length; ++i) {
-                            $('#results').append('<tr>' +
-                                '<td>' + json[i].objectName + '</td>' +
-                                '<td>' + json[i].objectDescription + '</td>' +
-                                '<td>' + json[i].objectCoins + '</td>' +
-                                '<td>' + json[i].objectTypeId + '</td>' +
-                                '</tr>');
-                        }
-                    },
-                    error: function (error) {
-                        alert("Not able to create the table. Try again");
-                    }
-                });
-
-
-            }else {
-                window.location.href="index.html";
-            }
-
-
-
-        });
-
-
-    </script>
 </head>
 <body style="background-color: black">
 

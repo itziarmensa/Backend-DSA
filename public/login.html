@@ -13,35 +13,7 @@
   <link rel="stylesheet" href="index.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script>
-
-    $(document).ready(function () {
-
-
-
-      $('#login').click(function () {
-        var mailLogin = $('#mailLogin').val();
-        var passwordLogin = $('#passwordLogin').val();
-        $.ajax({
-          contentType: 'application/json',
-          type: 'POST',
-          url: 'dsaApp/gameManager/user/login',
-          data: JSON.stringify({'email': mailLogin, 'password': passwordLogin}),
-          success: function (result) {
-            sessionStorage.setItem('mailUsuario',mailLogin);
-            window.location.href="usuario.html";
-          },
-          error: function (error) {
-            if (mailLogin == "" || passwordLogin == "")
-              alert("You left something blank, please try again!");
-            else
-              alert("Wrong mail or password, please try again!");
-          }
-        });
-      });
-    });
-
-  </script>
+  <script src="js/login.js"></script>
 </head>
 <body>
 
