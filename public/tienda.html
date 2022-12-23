@@ -13,68 +13,9 @@
     <link rel="stylesheet" href="index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script>
-
-        $(document).ready(function () {
-
-            if(sessionStorage.getItem('mailUsuario') != null){
-                $('#back').click(function () {
-                    window.location.href='usuario.html';
-                });
-
-                $.ajax({
-                    type: 'GET',
-                    url: 'dsaApp/gameManager/myObjects',
-                    dataType: 'text',
-                    success: function (data) {
-                        var json = $.parseJSON(data);
-                        $('#results').empty();
-                        for (var i = 0; i < json.length; ++i) {
-                            $('#results').append('<tr id="elementos">' +
-                                '<td>' + json[i].objectName + '</td>' +
-                                '<td>' + json[i].objectDescription + '</td>' +
-                                '<td>' + json[i].objectCoins + '</td>' +
-                                '<td>' + json[i].objectTypeId + '</td>' +
-                                '<td id='+json[i].objectId+'>Clica aqui para comprar!</td>' +
-                                '</tr>');
-
-                        }
-
-                    },
-                    error: function (error) {
-                        alert("Not able to create the table. Try again");
-                    }
-                });
+    <script src="js/tienda.js"></script>
 
 
-                const tableCells = document.querySelectorAll("#table");
-
-                tableCells.forEach(function (cell){
-                    cell.addEventListener("click", function (){
-                        // obtenemos la celda en la que se hizo clic
-                        var celda = event.target;
-
-                        // obtenemos el contenido de la celda
-                        var contenido = celda.id;
-
-                        $.ajax({
-                            contentType: 'application/json',
-                            type: 'PUT',
-                            url: 'dsaApp/gameManager/user/' + sessionStorage.getItem("mailUsuario") + '/' + contenido,
-                            dataType: 'text',
-                            success: function (result) {
-                                alert("Object bought successfully");
-                            }
-                        });
-                    });
-                });
-            }else {
-                window.location.href="index.html";
-            }
-        });
-
-
-    </script>
 </head>
 <body style="background-color: black">
 
