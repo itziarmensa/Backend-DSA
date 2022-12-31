@@ -4,6 +4,7 @@ import edu.upc.dsa.domain.GameManager;
 import edu.upc.dsa.domain.entity.Characters;
 import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.entity.User;
+import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.to.Coins;
@@ -212,7 +213,7 @@ public class GameManagerService {
         try {
             this.gameManager.buyObject(email, objectId);
         }
-        catch (UserNotExistsException e) {
+        catch (UserNotExistsException | NotEnoughCoinsException e) {
             return Response.status(500).build();
         }
         return Response.status(200).build();
@@ -243,21 +244,6 @@ public class GameManagerService {
     public Response getListCharacters() {
         List<Characters> myCharacters = this.gameManager.getAllCharacters();
         GenericEntity<List<Characters>> entity = new GenericEntity<List<Characters>>(myCharacters) {
-        };
-        return Response.status(200).entity(entity).build();
-    }
-
-    @GET
-    @ApiOperation(value = "get a List of Dice from the type", notes = "Gets a list of objects of a certain type")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful", response = Characters.class, responseContainer = "List"),
-            @ApiResponse(code = 404, message = "Not Found")
-    })
-    @Path("/dice")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getListDice() {
-        List<Dice> myDice = this.gameManager.getAllDice();
-        GenericEntity<List<Dice>> entity = new GenericEntity<List<Dice>>(myDice) {
         };
         return Response.status(200).entity(entity).build();
     }
