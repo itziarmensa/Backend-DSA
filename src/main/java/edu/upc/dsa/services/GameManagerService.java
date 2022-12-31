@@ -73,6 +73,22 @@ public class GameManagerService {
         return Response.status(200).build();
     }
 
+    @GET
+    @ApiOperation(value = "get the coins of a User", notes = "Gets the coins of a user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Coins.class),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @Path("/user/{email}/coins")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCoinsUser(@PathParam("email") String email) {
+        double coins = this.gameManager.getUserCoins(email);
+        Coins newCoins = new Coins(coins);
+        GenericEntity <Coins> entity = new GenericEntity<Coins>(newCoins) {  };
+        if (newCoins == null) return Response.status(404).entity(entity).build();
+        return Response.status(200).entity(entity).build();
+    }
+
     @POST
     @ApiOperation(value = "add a new Object", notes = "Adds a new object to the store")
     @ApiResponses(value = {

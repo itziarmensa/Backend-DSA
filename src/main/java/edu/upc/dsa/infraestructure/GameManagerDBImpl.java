@@ -7,14 +7,12 @@ import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
-import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.UserMyObjects;
 import edu.upc.eetac.dsa.*;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GameManagerDBImpl implements GameManager {
@@ -42,8 +40,8 @@ public class GameManagerDBImpl implements GameManager {
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();
         List<Object> usersList= this.session.findAll(User.class);
-        for(int i=0; i<usersList.size();i++) {
-            User user = (User) usersList.get(i);
+        for (Object o : usersList) {
+            User user = (User) o;
             users.add(user);
         }
         return users;
@@ -86,6 +84,14 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
+    public double getUserCoins(String email) {
+        User user = (User) this.session.getObject(User.class, email);
+        double coins = user.getCoins();
+        logger.info("User " + email + " has " + coins + " coins");
+        return coins;
+    }
+
+    @Override
     public void addObject(MyObjects myObject) {
         MyObjects object = new MyObjects(myObject.getObjectId(), myObject.getObjectName(), myObject.getObjectDescription(), myObject.getObjectCoins(), myObject.getObjectTypeId());
         this.session.save(object);
@@ -103,8 +109,8 @@ public class GameManagerDBImpl implements GameManager {
     public List<MyObjects> getTienda() {
         List<MyObjects> myObjects = new ArrayList<>();
         List<Object> myObjects1= this.session.findAll(MyObjects.class);
-        for(int i=0; i<myObjects1.size();i++){
-            MyObjects myObject = (MyObjects) myObjects1.get(i);
+        for (Object o : myObjects1) {
+            MyObjects myObject = (MyObjects) o;
             myObjects.add(myObject);
         }
         return myObjects;
@@ -167,8 +173,8 @@ public class GameManagerDBImpl implements GameManager {
     public List<ObjectType> getAllType() {
         List<ObjectType> types = new ArrayList<>();
         List<Object> objectTypes = this.session.findAll(ObjectType.class);
-        for(int i=0; i<objectTypes.size();i++){
-            ObjectType objectType = (ObjectType) objectTypes.get(i);
+        for (Object type : objectTypes) {
+            ObjectType objectType = (ObjectType) type;
             types.add(objectType);
         }
         return types;
@@ -203,7 +209,7 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
-    public void buyObject(String email, String objectId) throws UserNotExistsException, NotEnoughCoinsException {
+    public void buyObject(String email, String objectId) throws NotEnoughCoinsException {
         User user = (User) this.session.getObject(User.class, email);
         MyObjects myObject = (MyObjects) this.session.get(MyObjects.class, objectId);
         if (user.getCoins() < myObject.getObjectCoins()) {
@@ -225,8 +231,8 @@ public class GameManagerDBImpl implements GameManager {
     public List<Characters> getAllCharacters() {
         List<Characters> characters = new ArrayList<>();
         List<Object> characters1 = this.session.findAll(Characters.class);
-        for(int i=0; i<characters1.size();i++){
-            Characters character = (Characters) characters1.get(i);
+        for (Object o : characters1) {
+            Characters character = (Characters) o;
             characters.add(character);
         }
         return characters;

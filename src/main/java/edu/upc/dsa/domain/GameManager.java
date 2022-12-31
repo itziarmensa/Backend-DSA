@@ -15,6 +15,7 @@ public interface GameManager {
     public int numUsers();
     public void registerUser(String userName, String userSurname, String birthDate, String email, String password) throws UserAlreadyExistsException;
     public Boolean login(Credentials credentials);
+    public double getUserCoins(String email);
 
     /**Object*/
     public void addObject(MyObjects myObject);
