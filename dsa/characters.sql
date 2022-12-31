@@ -1,4 +1,4 @@
-create table characters
+create table Characters
 (
     characterId          varchar(50)  not null
         primary key,
