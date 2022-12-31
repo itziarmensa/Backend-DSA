@@ -6,11 +6,12 @@ function comprar(idObjeto) {
         dataType: 'text',
         success: function (result) {
             alert("Object bought successfully");
+        },
+        error: function (error) {
+            alert("Not enough coins to buy the object");
         }
     });
-
 }
-
 
 $(document).ready(function () {
 
@@ -36,7 +37,6 @@ $(document).ready(function () {
                         '</tr>');
 
                 }
-
             },
             error: function (error) {
                 alert("Not able to create the table. Try again");

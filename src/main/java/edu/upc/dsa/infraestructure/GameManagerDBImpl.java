@@ -222,6 +222,8 @@ public class GameManagerDBImpl implements GameManager {
             throw new NotEnoughCoinsException();
         }
         UserMyObjects userMyObjects = new UserMyObjects(email, objectId);
+        user.setCoins(user.getCoins()-myObject.getObjectCoins());
+        this.session.update(user);
         this.session.save(userMyObjects);
     }
 
