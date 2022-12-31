@@ -10,6 +10,7 @@ public class User {
     String userBirth;
     String email;
     String password;
+    double coins;
     public User()
     {
 
@@ -22,26 +23,25 @@ public class User {
         this.userBirth = userBirth;
         this.email = email;
         this.password = password;
+        this.coins = 50.0;
     }
 
     public String getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
+    public String getUserName() { return this.userName; }
 
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
     public String getUserSurname() {
-        return userSurname;
+        return this.userSurname;
     }
 
     public void setUserSurname(String userSurname) {
@@ -49,7 +49,7 @@ public class User {
     }
 
     public String getUserBirth() {
-        return userBirth;
+        return this.userBirth;
     }
 
     public void setUserBirth(String userBirth) {
@@ -57,7 +57,7 @@ public class User {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -65,7 +65,7 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -74,5 +74,13 @@ public class User {
 
     public Boolean hasEmail(String email){
         return this.email.equals(email);
+    }
+
+    public double getCoins() {
+        return this.coins;
+    }
+
+    public void setCoins(double coins) {
+        this.coins = coins;
     }
 }

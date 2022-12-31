@@ -5,6 +5,7 @@ import edu.upc.dsa.domain.entity.Characters;
 import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.domain.entity.User;
+import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
@@ -103,9 +104,9 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public void addObject(MyObjects myObject) {
-        MyObjects o = new MyObjects(myObject.getObjectId(), myObject.getObjectName(), myObject.getObjectDescription(), myObject.getObjectCoins(), myObject.getObjectTypeId());
-        this.session.save(o);
-        logger.info("Object " + o.getObjectName() + " has been successfully added to the store");
+        MyObjects object = new MyObjects(myObject.getObjectId(), myObject.getObjectName(), myObject.getObjectDescription(), myObject.getObjectCoins(), myObject.getObjectTypeId());
+        this.session.save(object);
+        logger.info("Object " + object.getObjectName() + " has been successfully added to the store");
     }
 
     @Override
@@ -121,10 +122,10 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public List<MyObjects> getTienda() {
         this.tienda.clear();
-        List<Object> myobjects= this.session.findAll(MyObjects.class);
-        for(int i=0; i<myobjects.size();i++){
-            MyObjects myobject = (MyObjects) myobjects.get(i);
-            this.tienda.add(myobject);
+        List<Object> myObjects= this.session.findAll(MyObjects.class);
+        for(int i=0; i<myObjects.size();i++){
+            MyObjects myObject = (MyObjects) myObjects.get(i);
+            this.tienda.add(myObject);
         }
         return this.tienda;
     }
@@ -149,29 +150,29 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public List<MyObjects> getListObject(String type) {
-        List<MyObjects> myListObjectsbyType = new ArrayList<>();
+        List<MyObjects> myListObjectsByType = new ArrayList<>();
 
         for (MyObjects o : this.tienda) {
             if (o.getObjectTypeId().equals(type)) {
-                myListObjectsbyType.add(o);
-                logger.info("The Objects that are of type " + type + " are:  " + myListObjectsbyType);
+                myListObjectsByType.add(o);
+                logger.info("The Objects that are of type " + type + " are:  " + myListObjectsByType);
             }
         }
         logger.info("There are no objects in the store of type " + type);
-        return myListObjectsbyType;
+        return myListObjectsByType;
     }
 
     @Override
     public void deleteListObject(String type) {
-        List<MyObjects> myListObjectsbyTypeRem = new ArrayList<>();
+        List<MyObjects> myListObjectsByTypeRem = new ArrayList<>();
 
         for (MyObjects o : this.tienda) {
             if (o.getObjectTypeId().equals(type)) {
-                myListObjectsbyTypeRem.add(o);
-                logger.info("Type " + type + " objects that have been removed are:  " + myListObjectsbyTypeRem);
+                myListObjectsByTypeRem.add(o);
+                logger.info("Type " + type + " objects that have been removed are:  " + myListObjectsByTypeRem);
             }
         }
-        for (MyObjects oRem : myListObjectsbyTypeRem) {
+        for (MyObjects oRem : myListObjectsByTypeRem) {
             tienda.remove(oRem);
         }
         logger.info("There are no objects in the store of type " + type);
@@ -194,23 +195,25 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
-    public double getCoinsObject(String nameObject) {
-        for (MyObjects o : this.tienda) {
-            if (o.getObjectName().equals(nameObject)) {
-                logger.info("The Object " + nameObject + " costs " + o.getObjectCoins() + " coins");
-                return o.getObjectCoins();
+    public double getCoinsObject(String objectName) {
+        double coins = 0.0;
+        for (MyObjects myObject : this.tienda) {
+            if (myObject.getObjectName().equals(objectName)) {
+                coins = myObject.getObjectCoins();
+                logger.info("The Object " + objectName + " costs " + coins + " coins");
+                return coins;
             }
         }
         logger.info("The Object is not in the Store");
-        return 0.0;
+        return coins;
     }
 
     @Override
     public String getDescriptionObject(String nameObject) {
-        for (MyObjects o : this.tienda) {
-            if (o.getObjectName().equals(nameObject)) {
-                logger.info("The description of Object " + nameObject + " is: " + o.getObjectDescription());
-                return o.getObjectDescription();
+        for (MyObjects myObject : this.tienda) {
+            if (myObject.getObjectName().equals(nameObject)) {
+                logger.info("The description of Object " + nameObject + " is: " + myObject.getObjectDescription());
+                return myObject.getObjectDescription();
             }
         }
         logger.info("The Object is not in the store");
@@ -218,29 +221,14 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
-    public void buyObject(String email, String objectId) throws UserNotExistsException {
-        getUsers();
-        Boolean found = false;
-        for (User user : this.users.values()) {
-            if (user.hasEmail(email)) {
-                found = true;
-                String userId = user.getUserId();
-                if (!userObjects.containsKey(email))
-                {
-                    List<MyObjects> myObjects = new ArrayList<>();
-                    userObjects.put(userId, myObjects);
-                }
-                MyObjects myObject = getObject(objectId);
-                userObjects.get(user.getUserId()).add(myObject);
-                UserMyObjects userMyObjects = new UserMyObjects(userId, objectId);
-                this.session.save(userMyObjects);
-                logger.info("The Object " + objectId + " has been successfully bought by the user with email " + email + "!");
-            }
+    public void buyObject(String email, String objectId) throws UserNotExistsException, NotEnoughCoinsException {
+        User user = (User) this.session.getObject(User.class, email);
+        MyObjects myObject = (MyObjects) this.session.get(MyObjects.class, objectId);
+        if (user.getCoins() < myObject.getObjectCoins()) {
+            throw new NotEnoughCoinsException();
         }
-        if (!found) {
-            logger.info("User with email " + email + " does not exist!");
-            throw new UserNotExistsException();
-        }
+        UserMyObjects userMyObjects = new UserMyObjects(email, objectId);
+        this.session.save(userMyObjects);
     }
 
     @Override
