@@ -21,21 +21,10 @@ public class GameManagerDBImpl implements GameManager {
     Session session;
     private static GameManager instance;
 
-    private List<MyObjects> tienda;
-    private HashMap<String, User> users;
-    private List<ObjectType> types;
-    private List<Characters> characters;
-    private HashMap<String, List<MyObjects>> userObjects;
-
     final static Logger logger = Logger.getLogger(GameManagerDBImpl.class);
 
     public GameManagerDBImpl(){
         this.session = FactorySession.openSession("jdbc:mariadb://localhost:3306/dsa","root", "Mazinger72");
-        this.tienda = new ArrayList<>();
-        this.users = new HashMap<>();
-        this.types = new ArrayList<>();
-        this.characters = new ArrayList<>();
-        this.userObjects = new HashMap<>();
     }
 
     public static GameManager getInstance() {
@@ -44,25 +33,25 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
-    public int size() {
-        getUsers();
-        int ret = this.users.size();
-        logger.info("size " + ret);
+    public int numUsers() {
+        int ret = this.session.count(User.class);
+        logger.info("User size is " + ret);
         return ret;
     }
 
-    public void getUsers() {
-        this.users.clear();
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
         List<Object> usersList= this.session.findAll(User.class);
         for(int i=0; i<usersList.size();i++) {
             User user = (User) usersList.get(i);
-            this.users.put(user.getUserId(), user);
+            users.add(user);
         }
+        return users;
     }
 
     public Boolean userExistsByEmail(String email) {
-        getUsers();
-        for (User user : this.users.values()) {
+        List<User> users = getUsers();
+        for (User user : users) {
             if (user.hasEmail(email)) {
                 return true;
             }
@@ -104,24 +93,21 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
-    public int getNumObject() {
-        return this.session.findAll(MyObjects.class).size();
-    }
-
-    @Override
-    public int numUsersRegistered() {
-        return this.session.findAll(User.class).size();
+    public int numObject() {
+        int ret = this.session.count(MyObjects.class);
+        logger.info("MyObjects size is " + ret);
+        return ret;
     }
 
     @Override
     public List<MyObjects> getTienda() {
-        this.tienda.clear();
-        List<Object> myObjects= this.session.findAll(MyObjects.class);
-        for(int i=0; i<myObjects.size();i++){
-            MyObjects myObject = (MyObjects) myObjects.get(i);
-            this.tienda.add(myObject);
+        List<MyObjects> myObjects = new ArrayList<>();
+        List<Object> myObjects1= this.session.findAll(MyObjects.class);
+        for(int i=0; i<myObjects1.size();i++){
+            MyObjects myObject = (MyObjects) myObjects1.get(i);
+            myObjects.add(myObject);
         }
-        return this.tienda;
+        return myObjects;
     }
 
     @Override
@@ -131,8 +117,8 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public void deleteObject(String objectId) {
-        getTienda();
-        for (MyObjects o : this.tienda) {
+        List<MyObjects> myObjects = getTienda();
+        for (MyObjects o : myObjects) {
             if (o.getObjectId().equals(objectId)) {
                 this.session.delete(o);
                 getTienda();
@@ -145,8 +131,8 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public List<MyObjects> getListObject(String type) {
         List<MyObjects> myListObjectsByType = new ArrayList<>();
-
-        for (MyObjects o : this.tienda) {
+        List<MyObjects> myObjects = getTienda();
+        for (MyObjects o : myObjects) {
             if (o.getObjectTypeId().equals(type)) {
                 myListObjectsByType.add(o);
                 logger.info("The Objects that are of type " + type + " are:  " + myListObjectsByType);
@@ -159,15 +145,15 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public void deleteListObject(String type) {
         List<MyObjects> myListObjectsByTypeRem = new ArrayList<>();
-
-        for (MyObjects o : this.tienda) {
+        List<MyObjects> myObjects = getTienda();
+        for (MyObjects o : myObjects) {
             if (o.getObjectTypeId().equals(type)) {
                 myListObjectsByTypeRem.add(o);
                 logger.info("Type " + type + " objects that have been removed are:  " + myListObjectsByTypeRem);
             }
         }
         for (MyObjects oRem : myListObjectsByTypeRem) {
-            tienda.remove(oRem);
+            myObjects.remove(oRem);
         }
         logger.info("There are no objects in the store of type " + type);
     }
@@ -179,19 +165,20 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public List<ObjectType> getAllType() {
-        this.types.clear();
-        List<Object> objectTypes= this.session.findAll(ObjectType.class);
+        List<ObjectType> types = new ArrayList<>();
+        List<Object> objectTypes = this.session.findAll(ObjectType.class);
         for(int i=0; i<objectTypes.size();i++){
             ObjectType objectType = (ObjectType) objectTypes.get(i);
-            this.types.add(objectType);
+            types.add(objectType);
         }
-        return this.types;
+        return types;
     }
 
     @Override
     public double getCoinsObject(String objectName) {
         double coins = 0.0;
-        for (MyObjects myObject : this.tienda) {
+        List<MyObjects> myObjects = getTienda();
+        for (MyObjects myObject : myObjects) {
             if (myObject.getObjectName().equals(objectName)) {
                 coins = myObject.getObjectCoins();
                 logger.info("The Object " + objectName + " costs " + coins + " coins");
@@ -204,7 +191,8 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public String getDescriptionObject(String nameObject) {
-        for (MyObjects myObject : this.tienda) {
+        List<MyObjects> myObjects = getTienda();
+        for (MyObjects myObject : myObjects) {
             if (myObject.getObjectName().equals(nameObject)) {
                 logger.info("The description of Object " + nameObject + " is: " + myObject.getObjectDescription());
                 return myObject.getObjectDescription();
@@ -221,7 +209,7 @@ public class GameManagerDBImpl implements GameManager {
         if (user.getCoins() < myObject.getObjectCoins()) {
             throw new NotEnoughCoinsException();
         }
-        UserMyObjects userMyObjects = new UserMyObjects(email, objectId);
+        UserMyObjects userMyObjects = new UserMyObjects(user.getUserId(), objectId);
         user.setCoins(user.getCoins()-myObject.getObjectCoins());
         this.session.update(user);
         this.session.save(userMyObjects);
@@ -230,23 +218,30 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public List<MyObjects> getObjectsByUser(String email) {
         logger.info("User with email " + email + " has requested for his/her objects");
-        return userObjects.get(email);
+        return null;
     }
 
     @Override
     public List<Characters> getAllCharacters() {
-        return this.characters;
+        List<Characters> characters = new ArrayList<>();
+        List<Object> characters1 = this.session.findAll(Characters.class);
+        for(int i=0; i<characters1.size();i++){
+            Characters character = (Characters) characters1.get(i);
+            characters.add(character);
+        }
+        return characters;
     }
 
     @Override
-    public double getNumCharacters() {
-        logger.info("We have " + this.characters.size() + " of Characters");
-        return this.characters.size();
+    public int numCharacters() {
+        int ret = this.session.count(Characters.class);
+        logger.info("Characters size is " + ret);
+        return ret;
     }
 
     @Override
     public void addCharacter(Characters character) {
-        this.characters.add(character);
+        this.session.save(character);
         logger.info("The Character " + character.getCharacterId() + " has been successfully added!");
     }
 }

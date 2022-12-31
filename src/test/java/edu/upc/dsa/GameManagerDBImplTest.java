@@ -68,13 +68,13 @@ public class GameManagerDBImplTest {
 
     @Test
     public void registerUserTest() throws UserAlreadyExistsException, EmailAddressNotValidException {
-        Assert.assertEquals(0,this.gameManager.numUsersRegistered());
+        Assert.assertEquals(0,this.gameManager.numUsers());
         this.gameManager.registerUser("Óscar", "Boullosa Dapena", "08/03/2001", "oscar.boullosa@estudiantat.upc.edu", "myPassword1");
-        Assert.assertEquals(1,this.gameManager.numUsersRegistered());
+        Assert.assertEquals(1,this.gameManager.numUsers());
         this.gameManager.registerUser("Itziar", "Mensa Minguito", "24/11/2001", "itziar.mensa@estudiantat.upc.edu", "myPassword2");
-        Assert.assertEquals(2,this.gameManager.numUsersRegistered());
+        Assert.assertEquals(2,this.gameManager.numUsers());
         this.gameManager.registerUser("Pau", "Feixa", "14/11/2001", "pau.feixa@estudiantat.upc.edu", "myPassword3");
-        Assert.assertEquals(3,this.gameManager.numUsersRegistered());
+        Assert.assertEquals(3,this.gameManager.numUsers());
     }
     @Test
     public void EmailAddressNotValidExceptionTest() throws EmailAddressNotValidException {
@@ -87,19 +87,19 @@ public class GameManagerDBImplTest {
     @Test
     public void addObjectTest()
     {
-        Assert.assertEquals(6, this.gameManager.getNumObject());
+        Assert.assertEquals(6, this.gameManager.numObject());
         MyObjects o7 = new MyObjects("77","Pocima", "Pocima con veneno", 5,"1");
         gameManager.addObject(o7);
-        Assert.assertEquals(7, this.gameManager.getNumObject());
+        Assert.assertEquals(7, this.gameManager.numObject());
 
         List<MyObjects> myObjects = this.gameManager.getTienda();
         Assert.assertEquals("Anillo", myObjects.get(1).getObjectName());
         Assert.assertEquals(5, myObjects.get(5).getObjectCoins(),0.5);
 
         gameManager.deleteObject("44");
-        Assert.assertEquals(6, this.gameManager.getNumObject());
+        Assert.assertEquals(6, this.gameManager.numObject());
         gameManager.deleteObject("22");
-        Assert.assertEquals(5, this.gameManager.getNumObject());
+        Assert.assertEquals(5, this.gameManager.numObject());
     }
 
     @Test
@@ -145,16 +145,16 @@ public class GameManagerDBImplTest {
     @Test
     public void deleteListObjectsByTypeTest(){
         gameManager.deleteListObject("3");
-        Assert.assertEquals(5, this.gameManager.getNumObject());
+        Assert.assertEquals(5, this.gameManager.numObject());
         gameManager.deleteListObject("1");
-        Assert.assertEquals(3, this.gameManager.getNumObject());
+        Assert.assertEquals(3, this.gameManager.numObject());
     }
 
     @Test
     public void getListCharacters(){
         List<Characters> c = gameManager.getAllCharacters();
 
-        Assert.assertEquals(7, gameManager.getNumCharacters(),0.5);
+        Assert.assertEquals(7, gameManager.numCharacters(),0.5);
 
         Assert.assertEquals("Mario", c.get(0).getCharacterName());
         Assert.assertEquals("Yoshi", c.get(3).getCharacterName());

@@ -12,14 +12,13 @@ import java.util.List;
 
 public interface GameManager {
     /**User*/
-    public int size();
+    public int numUsers();
     public void registerUser(String userName, String userSurname, String birthDate, String email, String password) throws UserAlreadyExistsException;
     public Boolean login(Credentials credentials);
 
     /**Object*/
     public void addObject(MyObjects myObject);
-    public int getNumObject();
-    public int numUsersRegistered();
+    public int numObject();
     public List<MyObjects> getTienda();
     public MyObjects getObject(String idObject);
     public void deleteObject(String idObject);
@@ -35,7 +34,7 @@ public interface GameManager {
 
     /**Characters*/
     public List<Characters> getAllCharacters();
-    public double getNumCharacters();
+    public int numCharacters();
     public void addCharacter(Characters c);
 
     /**public void upDateCharacter();

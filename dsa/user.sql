@@ -5,9 +5,9 @@ create table User
     userName    varchar(50) null,
     userSurname varchar(50) null,
     userBirth   varchar(50) null,
+    coins       double      null,
     email       varchar(50) null,
     password    varchar(50) null,
-    coins       double      null,
     constraint email
         unique (email)
 );
