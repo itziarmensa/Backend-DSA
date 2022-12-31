@@ -4,12 +4,6 @@ create table characters
         primary key,
     characterName        varchar(50)  null,
     characterDescription varchar(200) null,
-    characterCoins       double       null,
-    diceId               varchar(50)  null,
-    constraint characters_ibfk_1
-        foreign key (diceId) references dice (diceId)
+    characterCoins       double       null
 );
-
-create index diceId
-    on characters (diceId);
 

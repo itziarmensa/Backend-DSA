@@ -8,9 +8,9 @@ public class User {
     String userName;
     String userSurname;
     String userBirth;
+    double coins;
     String email;
     String password;
-    double coins;
     public User()
     {
 
@@ -21,9 +21,9 @@ public class User {
         this.userName = userName;
         this.userSurname = userSurname;
         this.userBirth = userBirth;
+        this.coins = 50.0;
         this.email = email;
         this.password = password;
-        this.coins = 50.0;
     }
 
     public String getUserId() {
@@ -56,6 +56,14 @@ public class User {
         this.userBirth = userBirth;
     }
 
+    public double getCoins() {
+        return this.coins;
+    }
+
+    public void setCoins(double coins) {
+        this.coins = coins;
+    }
+
     public String getEmail() {
         return this.email;
     }
@@ -74,13 +82,5 @@ public class User {
 
     public Boolean hasEmail(String email){
         return this.email.equals(email);
-    }
-
-    public double getCoins() {
-        return this.coins;
-    }
-
-    public void setCoins(double coins) {
-        this.coins = coins;
     }
 }

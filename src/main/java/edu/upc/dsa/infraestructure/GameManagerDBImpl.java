@@ -9,7 +9,6 @@ import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
-import edu.upc.dsa.domain.entity.vo.Dice;
 import edu.upc.dsa.domain.entity.vo.UserMyObjects;
 import edu.upc.eetac.dsa.*;
 import org.apache.log4j.Logger;
@@ -24,10 +23,7 @@ public class GameManagerDBImpl implements GameManager {
 
     private List<MyObjects> tienda;
     private HashMap<String, User> users;
-    private List<User> registeredUsers;
     private List<ObjectType> types;
-
-    private List<Dice> dados;
     private List<Characters> characters;
     private HashMap<String, List<MyObjects>> userObjects;
 
@@ -37,10 +33,8 @@ public class GameManagerDBImpl implements GameManager {
         this.session = FactorySession.openSession("jdbc:mariadb://localhost:3306/dsa","root", "Mazinger72");
         this.tienda = new ArrayList<>();
         this.users = new HashMap<>();
-        this.registeredUsers = new ArrayList<>();
         this.types = new ArrayList<>();
         this.characters = new ArrayList<>();
-        this.dados = new ArrayList<>();
         this.userObjects = new HashMap<>();
     }
 
@@ -252,22 +246,5 @@ public class GameManagerDBImpl implements GameManager {
     public void addCharacter(Characters character) {
         this.characters.add(character);
         logger.info("The Character " + character.getCharacterId() + " has been successfully added!");
-    }
-
-    @Override
-    public List<Dice> getAllDice() {
-        return this.dados;
-    }
-
-    @Override
-    public void addDice(Dice dice) {
-        this.dados.add(dice);
-        logger.info("The dice " + dice.getDiceId() + " has been successfully added!");
-    }
-
-    @Override
-    public double getNumDice() {
-        logger.info("We have " + this.dados.size() + " of dice");
-        return this.dados.size();
     }
 }

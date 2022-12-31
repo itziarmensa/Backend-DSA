@@ -6,7 +6,6 @@ import edu.upc.dsa.domain.GameManager;
 import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.domain.entity.exceptions.EmailAddressNotValidException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
-import edu.upc.dsa.domain.entity.vo.Dice;
 import edu.upc.dsa.infraestructure.GameManagerDBImpl;
 import org.junit.After;
 import org.junit.Assert;
@@ -45,32 +44,20 @@ public class GameManagerDBImplTest {
         gameManager.addObject(o6);
 
 
-        Characters c1 = new Characters("c1","Mario","hombre","d1",100);
+        Characters c1 = new Characters("c1","Mario","hombre", 100);
         gameManager.addCharacter(c1);
-        Characters c2 = new Characters("c2","Donkey Kong","mono","d2",50);
+        Characters c2 = new Characters("c2","Donkey Kong","mono",50);
         gameManager.addCharacter(c2);
-        Characters c3 = new Characters("c3","Diddy Kong","mono","d3",40);
+        Characters c3 = new Characters("c3","Diddy Kong","mono",40);
         gameManager.addCharacter(c3);
-        Characters c4 = new Characters("c4","Yoshi","cocodrilo","d4",80);
+        Characters c4 = new Characters("c4","Yoshi","cocodrilo",80);
         gameManager.addCharacter(c4);
-        Characters c5 = new Characters("c5","Pum pum","tortuga","d5",20);
+        Characters c5 = new Characters("c5","Pum pum","tortuga",20);
         gameManager.addCharacter(c5);
-        Characters c6 = new Characters("c6","Huesitos","fantasma","d1",60);
+        Characters c6 = new Characters("c6","Huesitos","fantasma",60);
         gameManager.addCharacter(c6);
-        Characters c7 = new Characters("c7","Pum pum","tortuga","d5",20);
+        Characters c7 = new Characters("c7","Pum pum","tortuga",20);
         gameManager.addCharacter(c7);
-
-
-        Dice d1 = new Dice("d1","6-6-6-6");
-        gameManager.addDice(d1);
-        Dice d2 = new Dice("d2","0-0-0-10-10");
-        gameManager.addDice(d2);
-        Dice d3 = new Dice("d3","0-0-7-7-7");
-        gameManager.addDice(d3);
-        Dice d4 = new Dice("d4","0-1-3-3-5-7");
-        gameManager.addDice(d4);
-        Dice d5 = new Dice("d5","0-3-3-3-3-8");
-        gameManager.addDice(d5);
     }
 
     @After
@@ -179,18 +166,4 @@ public class GameManagerDBImplTest {
         Assert.assertEquals(20, c.get(4).getCharacterCoins(),0.5);
         Assert.assertEquals(60, c.get(5).getCharacterCoins(),0.5);
     }
-    @Test
-    public void getListDice(){
-        List<Dice> l = gameManager.getAllDice();
-
-        Assert.assertEquals(5, gameManager.getNumDice(),0.5);
-
-        Assert.assertEquals("d1", l.get(0).getDiceId());
-        Assert.assertEquals("d4", l.get(3).getDiceId());
-
-        Assert.assertEquals("0-0-7-7-7", l.get(2).getDiceDescription());
-        Assert.assertEquals("0-3-3-3-3-8", l.get(4).getDiceDescription());
-    }
-
-
 }

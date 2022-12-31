@@ -7,7 +7,6 @@ import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
-import edu.upc.dsa.domain.entity.vo.Dice;
 
 import java.util.List;
 
@@ -45,9 +44,4 @@ public interface GameManager {
     public void changeDice(String idC);
     public double getCoinsCharacter(String idC);
     public String getDescriptionCharacter(String idC);*/
-
-    /**Dice*/
-    public List<Dice> getAllDice();
-    public void addDice(Dice dice);
-    public double getNumDice();
 }

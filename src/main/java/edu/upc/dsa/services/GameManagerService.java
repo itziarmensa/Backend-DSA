@@ -9,7 +9,6 @@ import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.to.Coins;
 import edu.upc.dsa.domain.entity.to.UserRegister;
 import edu.upc.dsa.domain.entity.vo.Credentials;
-import edu.upc.dsa.domain.entity.vo.Dice;
 import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.infraestructure.GameManagerDBImpl;
 import io.swagger.annotations.Api;
