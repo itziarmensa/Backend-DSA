@@ -94,9 +94,8 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public void addObject(MyObjects myObject) {
-        MyObjects object = new MyObjects(myObject.getObjectId(), myObject.getObjectName(), myObject.getObjectDescription(), myObject.getObjectCoins(), myObject.getObjectTypeId());
-        this.session.save(object);
-        logger.info("Object " + object.getObjectName() + " has been successfully added to the store");
+        this.session.save(myObject);
+        logger.info("Object " + myObject.getObjectName() + " has been successfully added to the store");
     }
 
     @Override

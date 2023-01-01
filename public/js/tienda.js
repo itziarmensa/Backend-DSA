@@ -5,6 +5,7 @@ function comprarObject(idObjeto) {
         url: 'dsaApp/gameManager/user/buyObject/' + sessionStorage.getItem("mailUsuario") + '/' + idObjeto,
         dataType: 'text',
         success: function (result) {
+            userCoins();
             alert("Object bought successfully");
         },
         error: function (error) {
@@ -20,10 +21,27 @@ function comprarCharacter(idCharacter) {
         url: 'dsaApp/gameManager/user/buyCharacter/' + sessionStorage.getItem("mailUsuario") + '/' + idCharacter,
         dataType: 'text',
         success: function (result) {
+            userCoins();
             alert("Character bought successfully");
         },
         error: function (error) {
             alert("Not enough coins to buy the object");
+        }
+    });
+}
+
+function userCoins() {
+    $.ajax({
+        type: 'GET',
+        url: 'dsaApp/gameManager/user/' + sessionStorage.getItem("mailUsuario") + '/coins',
+        data: {},
+        dataType: 'text',
+        success: function (data) {
+            var json = $.parseJSON(data);
+            $('#text1').val("Saldo: " + json + " coins")
+        },
+        error: function (error) {
+            alert("Not able to get your coins");
         }
     });
 }
@@ -34,7 +52,7 @@ $(document).ready(function () {
         $('#back').click(function () {
             window.location.href='usuario.html';
         });
-
+        userCoins();
         $.ajax({
             type: 'GET',
             url: 'dsaApp/gameManager/myObjects',

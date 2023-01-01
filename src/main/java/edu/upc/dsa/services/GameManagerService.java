@@ -252,6 +252,22 @@ public class GameManagerService {
         return Response.status(200).build();
     }
 
+    @POST
+    @ApiOperation(value = "add a new Character", notes = "Adds a new character to the store")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Characters.class),
+            @ApiResponse(code = 500, message = "Missing Information")
+    })
+    @Path("/characters")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response addCharacter(Characters character) {
+        if (character.getCharacterId() == null || character.getCharacterName() == null || character.getCharacterDescription() == null || character.getCharacterCoins() == 0.0) {
+            return Response.status(500).build();
+        }
+        gameManager.addCharacter(character);
+        return Response.status(200).entity(character).build();
+    }
+
     @GET
     @ApiOperation(value = "get all Objects from a User", notes = "Gets all the objects that a user has bought")
     @ApiResponses(value = {
@@ -267,7 +283,7 @@ public class GameManagerService {
     }
 
     @GET
-    @ApiOperation(value = "get a List of Characters from the type", notes = "Gets a list of objects of a certain type")
+    @ApiOperation(value = "get a List of Characters", notes = "Gets a list of characters")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successful", response = Characters.class, responseContainer = "List"),
             @ApiResponse(code = 404, message = "Not Found")
