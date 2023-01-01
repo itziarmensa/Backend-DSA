@@ -179,8 +179,15 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public List<MyObjects> getObjectsByUser(String email) {
+        User user = (User) this.session.getObject(User.class, email);
+        List<Object> myObjects1 = this.session.userMyObjects(MyObjects.class, user.getEmail());
+        List<MyObjects> myObjects = new ArrayList<>();
+        for (Object o : myObjects1) {
+            MyObjects myObject = (MyObjects) o;
+            myObjects.add(myObject);
+        }
         logger.info("User with email " + email + " has requested for his/her objects");
-        return null;
+        return myObjects;
     }
 
     @Override
@@ -254,7 +261,14 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public List<Characters> getCharactersByUser(String email) {
+        User user = (User) this.session.getObject(User.class, email);
+        List<Object> characters1 = this.session.userMyObjects(Characters.class, user.getEmail());
+        List<Characters> characters = new ArrayList<>();
+        for (Object c : characters1) {
+            Characters character = (Characters) c;
+            characters.add(character);
+        }
         logger.info("User with email " + email + " has requested for his/her characters");
-        return null;
+        return characters;
     }
 }
