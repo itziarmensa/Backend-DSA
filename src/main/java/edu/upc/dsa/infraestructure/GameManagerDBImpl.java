@@ -180,7 +180,7 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public List<MyObjects> getObjectsByUser(String email) {
         User user = (User) this.session.getObject(User.class, email);
-        List<Object> myObjects1 = this.session.userMyObjects(MyObjects.class, user.getEmail());
+        List<Object> myObjects1 = this.session.userMyObjects(MyObjects.class, user.getUserId());
         List<MyObjects> myObjects = new ArrayList<>();
         for (Object o : myObjects1) {
             MyObjects myObject = (MyObjects) o;
@@ -262,7 +262,7 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public List<Characters> getCharactersByUser(String email) {
         User user = (User) this.session.getObject(User.class, email);
-        List<Object> characters1 = this.session.userCharacters(Characters.class, user.getEmail());
+        List<Object> characters1 = this.session.userCharacters(Characters.class, user.getUserId());
         List<Characters> characters = new ArrayList<>();
         for (Object c : characters1) {
             Characters character = (Characters) c;
