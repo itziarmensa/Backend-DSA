@@ -127,41 +127,10 @@ public class GameManagerDBImpl implements GameManager {
         for (MyObjects o : myObjects) {
             if (o.getObjectId().equals(objectId)) {
                 this.session.delete(o);
-                getTienda();
                 break;
             }
         }
         logger.info("The Object " + objectId + " has been successfully removed!");
-    }
-
-    @Override
-    public List<MyObjects> getListObject(String type) {
-        List<MyObjects> myListObjectsByType = new ArrayList<>();
-        List<MyObjects> myObjects = getTienda();
-        for (MyObjects o : myObjects) {
-            if (o.getObjectTypeId().equals(type)) {
-                myListObjectsByType.add(o);
-                logger.info("The Objects that are of type " + type + " are:  " + myListObjectsByType);
-            }
-        }
-        logger.info("There are no objects in the store of type " + type);
-        return myListObjectsByType;
-    }
-
-    @Override
-    public void deleteListObject(String type) {
-        List<MyObjects> myListObjectsByTypeRem = new ArrayList<>();
-        List<MyObjects> myObjects = getTienda();
-        for (MyObjects o : myObjects) {
-            if (o.getObjectTypeId().equals(type)) {
-                myListObjectsByTypeRem.add(o);
-                logger.info("Type " + type + " objects that have been removed are:  " + myListObjectsByTypeRem);
-            }
-        }
-        for (MyObjects oRem : myListObjectsByTypeRem) {
-            myObjects.remove(oRem);
-        }
-        logger.info("There are no objects in the store of type " + type);
     }
 
     @Override
@@ -181,31 +150,18 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
-    public double getCoinsObject(String objectName) {
+    public double getCoinsObject(String objectId) {
         double coins = 0.0;
         List<MyObjects> myObjects = getTienda();
         for (MyObjects myObject : myObjects) {
-            if (myObject.getObjectName().equals(objectName)) {
+            if (myObject.getObjectId().equals(objectId)) {
                 coins = myObject.getObjectCoins();
-                logger.info("The Object " + objectName + " costs " + coins + " coins");
+                logger.info("The Object " + objectId + " costs " + coins + " coins");
                 return coins;
             }
         }
         logger.info("The Object is not in the Store");
         return coins;
-    }
-
-    @Override
-    public String getDescriptionObject(String nameObject) {
-        List<MyObjects> myObjects = getTienda();
-        for (MyObjects myObject : myObjects) {
-            if (myObject.getObjectName().equals(nameObject)) {
-                logger.info("The description of Object " + nameObject + " is: " + myObject.getObjectDescription());
-                return myObject.getObjectDescription();
-            }
-        }
-        logger.info("The Object is not in the store");
-        return null;
     }
 
     @Override
@@ -252,6 +208,38 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
+    public Characters getCharacter(String characterId) {
+        return (Characters) this.session.get(Characters.class, characterId);
+    }
+
+    @Override
+    public void deleteCharacter(String characterId) {
+        List<Characters> characters = getAllCharacters();
+        for (Characters c : characters) {
+            if (c.getCharacterId().equals(characterId)) {
+                this.session.delete(c);
+                break;
+            }
+        }
+        logger.info("The Character " + characterId + " has been successfully removed!");
+    }
+
+    @Override
+    public double getCoinsCharacter(String characterId) {
+        double coins = 0.0;
+        List<Characters> characters = getAllCharacters();
+        for (Characters character : characters) {
+            if (character.getCharacterId().equals(characterId)) {
+                coins = character.getCharacterCoins();
+                logger.info("The Character " + characterId + " costs " + coins + " coins");
+                return coins;
+            }
+        }
+        logger.info("The Character is not in the Store");
+        return coins;
+    }
+
+    @Override
     public void buyCharacter(String email, String characterId) throws NotEnoughCoinsException {
         User user = (User) this.session.getObject(User.class, email);
         Characters character = (Characters) this.session.get(Characters.class, characterId);
@@ -262,5 +250,11 @@ public class GameManagerDBImpl implements GameManager {
         user.setCoins(user.getCoins()-character.getCharacterCoins());
         this.session.update(user);
         this.session.save(userCharacters);
+    }
+
+    @Override
+    public List<Characters> getCharactersByUser(String email) {
+        logger.info("User with email " + email + " has requested for his/her characters");
+        return null;
     }
 }

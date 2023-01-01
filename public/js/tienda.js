@@ -38,7 +38,8 @@ function userCoins() {
         dataType: 'text',
         success: function (data) {
             var json = $.parseJSON(data);
-            $('#text1').val("Saldo: " + json + " coins")
+            $('#text1').empty();
+            $('#text1').append("Saldo: " + json.coins + " coins");
         },
         error: function (error) {
             alert("Not able to get your coins");

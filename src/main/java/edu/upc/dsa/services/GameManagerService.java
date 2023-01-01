@@ -6,7 +6,6 @@ import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
-import edu.upc.dsa.domain.entity.exceptions.UserNotExistsException;
 import edu.upc.dsa.domain.entity.to.Coins;
 import edu.upc.dsa.domain.entity.to.UserRegister;
 import edu.upc.dsa.domain.entity.vo.Credentials;
@@ -34,7 +33,7 @@ public class GameManagerService {
     }
 
     @POST
-    @ApiOperation(value = "register a new user", notes = "Register User")
+    @ApiOperation(value = "register a new User", notes = "Register User")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successful", response = User.class),
             @ApiResponse(code = 406, message = "User already exists"),
@@ -144,32 +143,6 @@ public class GameManagerService {
         return Response.status(200).build();
     }
 
-    @GET
-    @ApiOperation(value = "get a List of Object from the type", notes = "Gets a list of objects of a certain type")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful", response = MyObjects.class, responseContainer = "List"),
-            @ApiResponse(code = 404, message = "Not Found")
-    })
-    @Path("/myObjects/{type}/myObjects")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getListObject(@PathParam("type") String type) {
-        List<MyObjects> myList = this.gameManager.getListObject(type);
-        GenericEntity<List<MyObjects>> entity = new GenericEntity<List<MyObjects>>(myList) {
-        };
-        return Response.status(200).entity(entity).build();
-    }
-
-    @DELETE
-    @ApiOperation(value = "delete all Object with a certain type", notes = "Deletes an object from a certain type")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful"),
-    })
-    @Path("/myObjects/{type}/myObjects")
-    public Response deleteListObject(@PathParam("type") String type) {
-        this.gameManager.deleteListObject(type);
-        return Response.status(200).build();
-    }
-
     @POST
     @ApiOperation(value = "add a new type of Object", notes = "Adds a new type of object")
     @ApiResponses(value = {
@@ -194,28 +167,14 @@ public class GameManagerService {
             @ApiResponse(code = 200, message = "Successful", response = Coins.class),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @Path("/myObjects/{name}/coins")
+    @Path("/myObjects/{idObject}/coins")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCoinsObject(@PathParam("name") String name) {
-        double coins = this.gameManager.getCoinsObject(name);
+    public Response getCoinsObject(@PathParam("idObject") String idObject) {
+        double coins = this.gameManager.getCoinsObject(idObject);
         Coins newCoins = new Coins(coins);
         GenericEntity <Coins> entity = new GenericEntity<Coins>(newCoins) {  };
         if (newCoins == null) return Response.status(404).entity(entity).build();
         return Response.status(200).entity(entity).build();
-    }
-
-    @GET
-    @ApiOperation(value = "get description of an Object", notes = "Gets the description of an object")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful", response = String.class),
-            @ApiResponse(code = 404, message = "Not Found")
-    })
-    @Path("/myObjects/{name}/description")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getDescriptionObject(@PathParam("name") String name) {
-        String des = this.gameManager.getDescriptionObject(name);
-        if(des == "") return Response.status(404).entity(des).build();
-        return Response.status(200).entity(des).build();
     }
 
     @PUT
@@ -283,7 +242,21 @@ public class GameManagerService {
     }
 
     @GET
-    @ApiOperation(value = "get a List of Characters", notes = "Gets a list of characters")
+    @ApiOperation(value = "get all Characters from a User", notes = "Gets all the characters that a user has bought")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Characters.class, responseContainer = "List"),
+    })
+    @Path("/user/{email}/characters")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCharactersByUser(@PathParam("email") String email) {
+        List<Characters> characters = this.gameManager.getCharactersByUser(email);
+        GenericEntity<List<Characters>> entity = new GenericEntity<List<Characters>>(characters) {
+        };
+        return Response.status(200).entity(entity).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get all Characters", notes = "Gets all the characters from the store")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successful", response = Characters.class, responseContainer = "List"),
             @ApiResponse(code = 404, message = "Not Found")
@@ -294,6 +267,47 @@ public class GameManagerService {
         List<Characters> myCharacters = this.gameManager.getAllCharacters();
         GenericEntity<List<Characters>> entity = new GenericEntity<List<Characters>>(myCharacters) {
         };
+        return Response.status(200).entity(entity).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get a Character", notes = "Gets a character from the id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Characters.class),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @Path("/characters/{idCharacter}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCharacter(@PathParam("idCharacter") String idCharacter) {
+        Characters character = this.gameManager.getCharacter(idCharacter);
+        if (character == null) return Response.status(404).build();
+        else return Response.status(200).entity(character).build();
+    }
+
+    @DELETE
+    @ApiOperation(value = "delete a Character", notes = "Deletes a character with the id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful"),
+    })
+    @Path("/characters/{idCharacter}")
+    public Response deleteCharacter(@PathParam("idCharacter") String idCharacter) {
+        this.gameManager.deleteCharacter(idCharacter);
+        return Response.status(200).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get the coins of a Character", notes = "Gets the coins of a character")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Coins.class),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @Path("/characters/{idCharacter}/coins")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCoinsCharacter(@PathParam("idCharacter") String idCharacter) {
+        double coins = this.gameManager.getCoinsCharacter(idCharacter);
+        Coins newCoins = new Coins(coins);
+        GenericEntity <Coins> entity = new GenericEntity<Coins>(newCoins) {  };
+        if (newCoins == null) return Response.status(404).entity(entity).build();
         return Response.status(200).entity(entity).build();
     }
 }
