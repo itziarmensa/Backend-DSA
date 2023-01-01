@@ -8,6 +8,7 @@ import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
+import edu.upc.dsa.domain.entity.vo.UserCharacters;
 import edu.upc.dsa.domain.entity.vo.UserMyObjects;
 import edu.upc.eetac.dsa.*;
 import org.apache.log4j.Logger;
@@ -249,5 +250,18 @@ public class GameManagerDBImpl implements GameManager {
     public void addCharacter(Characters character) {
         this.session.save(character);
         logger.info("The Character " + character.getCharacterId() + " has been successfully added!");
+    }
+
+    @Override
+    public void buyCharacter(String email, String characterId) throws NotEnoughCoinsException {
+        User user = (User) this.session.getObject(User.class, email);
+        Characters character = (Characters) this.session.get(Characters.class, characterId);
+        if (user.getCoins() < character.getCharacterCoins()) {
+            throw new NotEnoughCoinsException();
+        }
+        UserCharacters userCharacters = new UserCharacters(user.getUserId(), characterId);
+        user.setCoins(user.getCoins()-character.getCharacterCoins());
+        this.session.update(user);
+        this.session.save(userCharacters);
     }
 }

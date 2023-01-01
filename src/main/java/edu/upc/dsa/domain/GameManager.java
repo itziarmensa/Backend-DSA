@@ -29,7 +29,7 @@ public interface GameManager {
     public List<ObjectType> getAllType();
     public double getCoinsObject(String nameObject);
     public String getDescriptionObject(String nameObject);
-    public void buyObject(String email, String objectId) throws UserNotExistsException, NotEnoughCoinsException;
+    public void buyObject(String email, String objectId) throws NotEnoughCoinsException;
 
     public List<MyObjects> getObjectsByUser(String email);
 
@@ -37,6 +37,7 @@ public interface GameManager {
     public List<Characters> getAllCharacters();
     public int numCharacters();
     public void addCharacter(Characters c);
+    public void buyCharacter(String email, String characterId) throws NotEnoughCoinsException;
 
     /**public void upDateCharacter();
     public void deleteCharacter(String idC);

@@ -224,12 +224,29 @@ public class GameManagerService {
             @ApiResponse(code = 200, message = "Successful"),
             @ApiResponse(code = 500, message = "Error Buying")
     })
-    @Path("/user/{email}/{objectId}")
-    public Response buyObject(@PathParam("email") String email, @PathParam("objectId") String objectId) throws UserNotExistsException {
+    @Path("/user/buyObject/{email}/{objectId}")
+    public Response buyObject(@PathParam("email") String email, @PathParam("objectId") String objectId) {
         try {
             this.gameManager.buyObject(email, objectId);
         }
-        catch (UserNotExistsException | NotEnoughCoinsException e) {
+        catch (NotEnoughCoinsException e) {
+            return Response.status(500).build();
+        }
+        return Response.status(200).build();
+    }
+
+    @PUT
+    @ApiOperation(value = "buy a Character", notes = "Buys a character for a user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful"),
+            @ApiResponse(code = 500, message = "Error Buying")
+    })
+    @Path("/user/buyCharacter/{email}/{characterId}")
+    public Response buyCharacter(@PathParam("email") String email, @PathParam("characterId") String characterId) {
+        try {
+            this.gameManager.buyCharacter(email, characterId);
+        }
+        catch (NotEnoughCoinsException e) {
             return Response.status(500).build();
         }
         return Response.status(200).build();
