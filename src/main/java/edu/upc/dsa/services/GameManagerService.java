@@ -73,6 +73,21 @@ public class GameManagerService {
     }
 
     @GET
+    @ApiOperation(value = "get all Users", notes = "Gets all the users that are registered")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = User.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @Path("/users")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getListUsers() {
+        List<User> users = this.gameManager.getUsers();
+        GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {
+        };
+        return Response.status(200).entity(entity).build();
+    }
+
+    @GET
     @ApiOperation(value = "get the coins of a User", notes = "Gets the coins of a user")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successful", response = Coins.class),

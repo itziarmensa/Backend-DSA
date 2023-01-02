@@ -3,6 +3,7 @@ package edu.upc.dsa.domain;
 import edu.upc.dsa.domain.entity.Characters;
 import edu.upc.dsa.domain.entity.MyObjects;
 import edu.upc.dsa.domain.entity.ObjectType;
+import edu.upc.dsa.domain.entity.User;
 import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
@@ -14,6 +15,7 @@ public interface GameManager {
     public int numUsers();
     public void registerUser(String userName, String userSurname, String birthDate, String email, String password) throws UserAlreadyExistsException;
     public Boolean login(Credentials credentials);
+    public List<User> getUsers();
     public double getUserCoins(String email);
     public void buyObject(String email, String objectId) throws NotEnoughCoinsException;
     public List<MyObjects> getObjectsByUser(String email);

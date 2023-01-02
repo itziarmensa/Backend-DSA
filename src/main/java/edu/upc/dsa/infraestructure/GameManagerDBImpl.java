@@ -38,16 +38,6 @@ public class GameManagerDBImpl implements GameManager {
         return ret;
     }
 
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<>();
-        List<Object> usersList= this.session.findAll(User.class);
-        for (Object o : usersList) {
-            User user = (User) o;
-            users.add(user);
-        }
-        return users;
-    }
-
     public Boolean userExistsByEmail(String email) {
         List<User> users = getUsers();
         for (User user : users) {
@@ -85,6 +75,18 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+        List<Object> usersList= this.session.findAll(User.class);
+        for (Object o : usersList) {
+            User user = (User) o;
+            users.add(user);
+        }
+        logger.info("All Users returned");
+        return users;
+    }
+
+    @Override
     public double getUserCoins(String email) {
         User user = (User) this.session.getObject(User.class, email);
         double coins = user.getCoins();
@@ -113,11 +115,13 @@ public class GameManagerDBImpl implements GameManager {
             MyObjects myObject = (MyObjects) o;
             myObjects.add(myObject);
         }
+        logger.info("All Objects returned");
         return myObjects;
     }
 
     @Override
     public MyObjects getObject(String objectId) {
+        logger.info("Object with id " + objectId + " returned");
         return (MyObjects) this.session.get(MyObjects.class, objectId);
     }
 
@@ -127,15 +131,16 @@ public class GameManagerDBImpl implements GameManager {
         for (MyObjects o : myObjects) {
             if (o.getObjectId().equals(objectId)) {
                 this.session.delete(o);
+                logger.info("The Object " + objectId + " has been successfully removed");
                 break;
             }
         }
-        logger.info("The Object " + objectId + " has been successfully removed!");
     }
 
     @Override
     public void addTypeObject(ObjectType objectType) {
         this.session.save(objectType);
+        logger.info("The Type " + objectType + " has been successfully added");
     }
 
     @Override
@@ -146,6 +151,7 @@ public class GameManagerDBImpl implements GameManager {
             ObjectType objectType = (ObjectType) type;
             types.add(objectType);
         }
+        logger.info("All Types returned");
         return types;
     }
 
@@ -169,12 +175,14 @@ public class GameManagerDBImpl implements GameManager {
         User user = (User) this.session.getObject(User.class, email);
         MyObjects myObject = (MyObjects) this.session.get(MyObjects.class, objectId);
         if (user.getCoins() < myObject.getObjectCoins()) {
+            logger.info("User " + email + " has not enough coins to buy the Object with id " + objectId);
             throw new NotEnoughCoinsException();
         }
         UserMyObjects userMyObjects = new UserMyObjects(user.getUserId(), objectId);
         user.setCoins(user.getCoins()-myObject.getObjectCoins());
         this.session.update(user);
         this.session.save(userMyObjects);
+        logger.info("User " + email + " has bought the Object with id " + objectId + " successfully");
     }
 
     @Override
@@ -198,6 +206,7 @@ public class GameManagerDBImpl implements GameManager {
             Characters character = (Characters) o;
             characters.add(character);
         }
+        logger.info("All Characters returned");
         return characters;
     }
 
@@ -211,11 +220,12 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public void addCharacter(Characters character) {
         this.session.save(character);
-        logger.info("The Character " + character.getCharacterId() + " has been successfully added!");
+        logger.info("The Character " + character.getCharacterId() + " has been successfully added");
     }
 
     @Override
     public Characters getCharacter(String characterId) {
+        logger.info("Character with id " + characterId + " returned");
         return (Characters) this.session.get(Characters.class, characterId);
     }
 
@@ -228,7 +238,7 @@ public class GameManagerDBImpl implements GameManager {
                 break;
             }
         }
-        logger.info("The Character " + characterId + " has been successfully removed!");
+        logger.info("The Character " + characterId + " has been successfully removed");
     }
 
     @Override
@@ -251,12 +261,14 @@ public class GameManagerDBImpl implements GameManager {
         User user = (User) this.session.getObject(User.class, email);
         Characters character = (Characters) this.session.get(Characters.class, characterId);
         if (user.getCoins() < character.getCharacterCoins()) {
+            logger.info("User " + email + " has not enough coins to buy the Character with id " + characterId);
             throw new NotEnoughCoinsException();
         }
         UserCharacters userCharacters = new UserCharacters(user.getUserId(), characterId);
         user.setCoins(user.getCoins()-character.getCharacterCoins());
         this.session.update(user);
         this.session.save(userCharacters);
+        logger.info("User " + email + " has bought the Character with id " + characterId + " successfully");
     }
 
     @Override
