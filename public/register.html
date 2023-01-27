@@ -26,13 +26,19 @@
     <input type="date" id="birthRegister" value="" placeholder="Birthdate"></p>
 
     <input type="email" id="mailRegister" value="" placeholder="Mail"></p>
+    <p class="text-danger" id="errorRegister">Error: No te has podido registrar correctamente. Porfavor vuelvelo a intentar.</p>
 
     <input type="password" id="passwordRegister" value="" placeholder="Password"></p>
 
     <input type="password" id="passwordRegister2" value="" placeholder="Repeat Password"></p>
+    <p class="text-danger" id="errorPasswordRegister">Las contraseñas no coinciden. Por favor asegúrese de que las contraseñas sean las mismas</p>
 
     <button type="button" class="btn btn-success btn-sm" id="register">Register</button>
     </p>
+    <p class="text-success" id="succesRegister">Te has registrado correctamente!</p>
+    <div class="formulario_mensaje" id="errorEmptyRegister">
+        <p><i class="fa-regular fa-triangle-exclamation"></i><b>Error: </b>Debes rellenar todos los campos para poder registrarte.</p>
+    </div>
 
     <button type="button" class="btn btn-success btn-sm" id="back">Back</button>
     </p>

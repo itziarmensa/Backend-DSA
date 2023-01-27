@@ -1,6 +1,7 @@
 $(document).ready(function () {
-
-
+    $("#errorLogIn").hide();
+    $("#logInSucces").hide();
+    $("#errorEmptyLogIn").hide();
 
     $('#login').click(function () {
         var mailLogin = $('#mailLogin').val();
@@ -12,13 +13,16 @@ $(document).ready(function () {
             data: JSON.stringify({'email': mailLogin, 'password': passwordLogin}),
             success: function (result) {
                 sessionStorage.setItem('mailUsuario',mailLogin);
+                $("#logInSucces").show();
                 window.location.href="usuario.html";
             },
             error: function (error) {
                 if (mailLogin == "" || passwordLogin == "")
-                    alert("You left something blank, please try again!");
+                    //alert("You left something blank, please try again!");
+                    $("#errorEmptyLogIn").show();
                 else
-                    alert("Wrong mail or password, please try again!");
+                    //alert("Wrong mail or password, please try again!");
+                    $("#errorLogIn").show();
             }
         });
     });

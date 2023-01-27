@@ -14,17 +14,37 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="js/login.js"></script>
+  <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/brands.js" integrity="sha384-sCI3dTBIJuqT6AwL++zH7qL8ZdKaHpxU43dDt9SyOzimtQ9eyRhkG3B7KMl6AO19" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ" crossorigin="anonymous"></script>
 </head>
 <body>
 
 <div class="container1" id="loginContainer">
+  <!-- Mail -->
   <input type="email" id="mailLogin" value="" placeholder="Mail" size="30" ></p>
+  <div class="mail">
+    <i class="formulario_validacion_estado fa-solid fa-circle-xmark"></i>
+  </div>
 
+  <!-- Password -->
   <input type="password" id="passwordLogin" value="" placeholder="Password" size="30"></p>
+  <div class="password">
+    <i class="formulario_validacion_estado fa-solid fa-circle-xmark"></i>
+  </div>
+
+  <p class="text-danger" id="errorLogIn">La contraseña o el mail no son correctos. Por favor asegúrese de que haya introducido bien los datos.</p>
+
+  <div class="formulario_mensaje" id="errorEmptyLogIn">
+    <p><i class="fa-regular fa-triangle-exclamation"></i><b>Error: </b>Debes rellenar todos los campos para poder inciar sesión.</p>
+  </div>
+
 
   <button type="button" class="btn btn-success btn-sm" id="login">Inicia Sesión</button>
   </p>
 
+  <p class="text-success" id="logInSucces">Login realizado correctamente!</p>
   <p id="text1">¿No tienes cuenta?</p>
 
   <button type="button" class="btn btn-success btn-sm" id="createUser" onclick="window.location.href='register.html';">Regístrate!</button>

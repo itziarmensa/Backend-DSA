@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    $("#errorEmptyRegister").hide();
+    $("#succesRegister").hide();
+    $("#errorRegister").hide();
+    $("#errorPasswordRegister").hide();
 
     $('#back').click(function () {
         window.location.href='login.html';
@@ -25,17 +29,26 @@ $(document).ready(function () {
                 }),
                 dataType: 'json',
                 success: function (result) {
-                    alert("Register successful");
-                    window.location.href='login.html';
+                    //alert("Register successful");
+                    if (nameRegister == "" || surnameRegister == "" || birthRegister == "" || mailRegister == "" || passwordRegister == "" || passwordRegister2 == "" )
+                        $("#errorEmptyRegister").show();
+                    else{
+                        $("#succesRegister").show();
+                        window.location.href='login.html';
+                    }
                 },
                 error: function (error) {
-                    alert("Register failed");
+                    if (nameRegister == "" || surnameRegister == "" || birthRegister == "" || mailRegister == "" || passwordRegister == "" || passwordRegister2 == "" )
+                        $("#errorEmptyRegister").show();
+                    else
+                        //alert("Register failed");
+                        $("#errorRegister").show();
                 }
             });
         }
         else {
-            alert("Password has to be the same");
+            //alert("Password has to be the same");
+            $("#errorPasswordRegister").show();
         }
     });
-
 });

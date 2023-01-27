@@ -20,7 +20,7 @@ public class GameManagerDBImpl implements GameManager {
     final static Logger logger = Logger.getLogger(GameManagerDBImpl.class);
 
     public GameManagerDBImpl(){
-        this.session = FactorySession.openSession("jdbc:mariadb://localhost:3306/dsa","root", "Mazinger72");
+        this.session = FactorySession.openSession("jdbc:mariadb://localhost:3306/dsa","root", "0000");
     }
 
     public static GameManager getInstance() {
