@@ -6,6 +6,7 @@ create table User
     userSurname varchar(50) null,
     userBirth   varchar(50) null,
     coins       double      null,
+    points      int         null,
     email       varchar(50) null,
     password    varchar(50) null,
     constraint email
