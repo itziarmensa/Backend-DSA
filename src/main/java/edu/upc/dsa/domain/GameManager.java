@@ -19,6 +19,7 @@ public interface GameManager {
     public void buyCharacter(String email, String characterId) throws NotEnoughCoinsException;
     public List<Characters> getCharactersByUser(String email);
     public List<Partida> getPartidasByUser(String email);
+    public void updateUser(User user);
 
     /**Object*/
     public void addObject(MyObjects myObject);

@@ -323,4 +323,10 @@ public class GameManagerDBImpl implements GameManager {
         logger.info("User with email " + email + " has requested for his/her partidas");
         return partidas;
     }
+
+    @Override
+    public void updateUser(User user) {
+        this.session.update(user);
+        logger.info("The User with email " + user.getEmail() + " has been successfully updated");
+    }
 }

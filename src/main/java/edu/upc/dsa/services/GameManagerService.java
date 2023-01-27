@@ -380,4 +380,15 @@ public class GameManagerService {
         this.gameManager.updatePartida(partida);
         return Response.status(200).build();
     }
+
+    @PUT
+    @ApiOperation(value = "update a User", notes = "updates a User")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful")
+    })
+    @Path("/user")
+    public Response updateUser(User user) {
+        this.gameManager.updateUser(user);
+        return Response.status(200).build();
+    }
 }
