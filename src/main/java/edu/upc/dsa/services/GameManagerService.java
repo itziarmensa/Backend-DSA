@@ -5,6 +5,7 @@ import edu.upc.dsa.domain.entity.*;
 import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.to.Coins;
+import edu.upc.dsa.domain.entity.to.PartidaCreate;
 import edu.upc.dsa.domain.entity.to.UserRegister;
 import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.infraestructure.GameManagerDBImpl;
@@ -331,10 +332,11 @@ public class GameManagerService {
     })
     @Path("/partida")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addPartida(Partida partida) {
-        if (partida.getEmail() == null || partida.getObjectId() == null || partida.getCharacterId() == null) {
+    public Response addPartida(PartidaCreate partidaCreate) {
+        if (partidaCreate.getEmail() == null || partidaCreate.getObjectId() == null || partidaCreate.getCharacterId() == null) {
             return Response.status(500).build();
         }
+        Partida partida = new Partida(partidaCreate.getEmail(), partidaCreate.getObjectId(), partidaCreate.getCharacterId());
         gameManager.createPartida(partida);
         return Response.status(200).entity(partida).build();
     }
@@ -366,5 +368,16 @@ public class GameManagerService {
         GenericEntity<List<Partida>> entity = new GenericEntity<List<Partida>>(partidas) {
         };
         return Response.status(200).entity(entity).build();
+    }
+
+    @PUT
+    @ApiOperation(value = "update a Partida", notes = "updates a Partida")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful")
+    })
+    @Path("/partida")
+    public Response updatePartida(Partida partida) {
+        this.gameManager.updatePartida(partida);
+        return Response.status(200).build();
     }
 }
