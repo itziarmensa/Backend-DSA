@@ -1,10 +1,7 @@
 package edu.upc.dsa.infraestructure;
 
 import edu.upc.dsa.domain.GameManager;
-import edu.upc.dsa.domain.entity.Characters;
-import edu.upc.dsa.domain.entity.MyObjects;
-import edu.upc.dsa.domain.entity.ObjectType;
-import edu.upc.dsa.domain.entity.User;
+import edu.upc.dsa.domain.entity.*;
 import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
@@ -257,6 +254,37 @@ public class GameManagerDBImpl implements GameManager {
     }
 
     @Override
+    public void createPartida(Partida partida) {
+        this.session.save(partida);
+        logger.info("The Partida by " + partida.getEmail() + " has been successfully created");
+    }
+
+    @Override
+    public void updatePartida(Partida partida) {
+        this.session.update(partida);
+        logger.info("The Partida by " + partida.getEmail() + " has been successfully updated");
+    }
+
+    @Override
+    public int numPartidas() {
+        int ret = this.session.count(Partida.class);
+        logger.info("Partidas size is " + ret);
+        return ret;
+    }
+
+    @Override
+    public List<Partida> getAllPartidas() {
+        List<Partida> partidas = new ArrayList<>();
+        List<Object> partidas1 = this.session.findAll(Partida.class);
+        for (Object o : partidas1) {
+            Partida partida = (Partida) o;
+            partidas.add(partida);
+        }
+        logger.info("All Partidas returned");
+        return partidas;
+    }
+
+    @Override
     public void buyCharacter(String email, String characterId) throws NotEnoughCoinsException {
         User user = (User) this.session.getObject(User.class, email);
         Characters character = (Characters) this.session.get(Characters.class, characterId);
@@ -282,5 +310,17 @@ public class GameManagerDBImpl implements GameManager {
         }
         logger.info("User with email " + email + " has requested for his/her characters");
         return characters;
+    }
+
+    @Override
+    public List<Partida> getPartidasByUser(String email) {
+        List<Object> partidas1 = this.session.userPartidas(Partida.class, email);
+        List<Partida> partidas = new ArrayList<>();
+        for (Object o : partidas1) {
+            Partida partida = (Partida) o;
+            partidas.add(partida);
+        }
+        logger.info("User with email " + email + " has requested for his/her partidas");
+        return partidas;
     }
 }

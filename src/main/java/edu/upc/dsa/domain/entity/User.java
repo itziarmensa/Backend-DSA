@@ -1,6 +1,5 @@
 package edu.upc.dsa.domain.entity;
 
-import edu.upc.dsa.domain.entity.vo.Credentials;
 import edu.upc.dsa.domain.entity.vo.RandomId;
 
 public class User {
@@ -9,6 +8,7 @@ public class User {
     String userSurname;
     String userBirth;
     double coins;
+    int points;
     String email;
     String password;
     public User()
@@ -22,6 +22,7 @@ public class User {
         this.userSurname = userSurname;
         this.userBirth = userBirth;
         this.coins = 50.0;
+        this.points = 0;
         this.email = email;
         this.password = password;
     }
@@ -62,6 +63,14 @@ public class User {
 
     public void setCoins(double coins) {
         this.coins = coins;
+    }
+
+    public int getPoints() {
+        return this.points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public String getEmail() {

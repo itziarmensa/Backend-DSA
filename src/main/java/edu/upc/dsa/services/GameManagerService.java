@@ -1,15 +1,12 @@
 package edu.upc.dsa.services;
 
 import edu.upc.dsa.domain.GameManager;
-import edu.upc.dsa.domain.entity.Characters;
-import edu.upc.dsa.domain.entity.MyObjects;
-import edu.upc.dsa.domain.entity.User;
+import edu.upc.dsa.domain.entity.*;
 import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.to.Coins;
 import edu.upc.dsa.domain.entity.to.UserRegister;
 import edu.upc.dsa.domain.entity.vo.Credentials;
-import edu.upc.dsa.domain.entity.ObjectType;
 import edu.upc.dsa.infraestructure.GameManagerDBImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -323,6 +320,51 @@ public class GameManagerService {
         Coins newCoins = new Coins(coins);
         GenericEntity <Coins> entity = new GenericEntity<Coins>(newCoins) {  };
         if (newCoins == null) return Response.status(404).entity(entity).build();
+        return Response.status(200).entity(entity).build();
+    }
+
+    @POST
+    @ApiOperation(value = "add a new Partida", notes = "Adds a new partida")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Partida.class),
+            @ApiResponse(code = 500, message = "Missing Information")
+    })
+    @Path("/partida")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response addPartida(Partida partida) {
+        if (partida.getEmail() == null || partida.getObjectId() == null || partida.getCharacterId() == null) {
+            return Response.status(500).build();
+        }
+        gameManager.createPartida(partida);
+        return Response.status(200).entity(partida).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get all Partidas from a User", notes = "Gets all the partidas that a user has played")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Partida.class, responseContainer = "List"),
+    })
+    @Path("/user/{email}/partidas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPartidasByUser(@PathParam("email") String email) {
+        List<Partida> partidas = this.gameManager.getPartidasByUser(email);
+        GenericEntity<List<Partida>> entity = new GenericEntity<List<Partida>>(partidas) {
+        };
+        return Response.status(200).entity(entity).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get all Partidas", notes = "Gets all the partidas")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Partida.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @Path("/partidas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getListPartidas() {
+        List<Partida> partidas = this.gameManager.getAllPartidas();
+        GenericEntity<List<Partida>> entity = new GenericEntity<List<Partida>>(partidas) {
+        };
         return Response.status(200).entity(entity).build();
     }
 }
