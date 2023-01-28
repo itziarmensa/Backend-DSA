@@ -4,6 +4,7 @@ import edu.upc.dsa.domain.entity.*;
 import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
+import edu.upc.dsa.domain.entity.Information;
 
 import java.util.List;
 
@@ -45,4 +46,16 @@ public interface GameManager {
     public void updatePartida(Partida partida);
     public int numPartidas();
     public List<Partida> getAllPartidas();
+
+    /**FAQs*/
+    public void addFaqs(Faqs faqs);
+    public List<Faqs> getFaqs();
+
+    /**Issue*/
+    public void addIssue(Issue issue);
+    public List<Issue> getListIssues();
+
+    /**Information*/
+    public void addInformation(Information information);
+    public List<Information> getInformation();
 }

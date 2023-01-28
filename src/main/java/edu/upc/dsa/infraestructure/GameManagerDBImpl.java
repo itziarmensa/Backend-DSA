@@ -5,6 +5,7 @@ import edu.upc.dsa.domain.entity.*;
 import edu.upc.dsa.domain.entity.exceptions.NotEnoughCoinsException;
 import edu.upc.dsa.domain.entity.exceptions.UserAlreadyExistsException;
 import edu.upc.dsa.domain.entity.vo.Credentials;
+import edu.upc.dsa.domain.entity.Information;
 import edu.upc.dsa.domain.entity.vo.UserCharacters;
 import edu.upc.dsa.domain.entity.vo.UserMyObjects;
 import edu.upc.eetac.dsa.*;
@@ -282,6 +283,60 @@ public class GameManagerDBImpl implements GameManager {
         }
         logger.info("All Partidas returned");
         return partidas;
+    }
+
+    @Override
+    public void addFaqs(Faqs faqs) {
+        logger.info("New FAQ added. Question:" + faqs.getQuestion() + " Answer: " + faqs.getAnswer());
+        this.session.save(faqs);
+    }
+
+    @Override
+    public List<Faqs> getFaqs() {
+        List<Faqs> faqsList = new ArrayList<>();
+        List<Object> faqs1 = this.session.findAll(Faqs.class);
+        for (Object o : faqs1) {
+            Faqs faqs = (Faqs) o;
+            faqs1.add(faqs);
+        }
+        logger.info("All the " + faqsList.size() + " FAQs have been returned");
+        return faqsList;
+    }
+
+    @Override
+    public void addIssue(Issue issue){
+        this.session.save(issue);
+        logger.info("The user " + issue.getInformer() + " has send the issue: " + issue.getMessage());
+    }
+
+    @Override
+    public List<Issue> getListIssues(){
+        List<Issue> issues = new ArrayList<>();
+        List<Object> listIssues = this.session.findAll(Issue.class);
+        for (Object o : listIssues) {
+            Issue issue = (Issue) o;
+            issues.add(issue);
+        }
+        logger.info("All issues returned");
+        return issues;
+    }
+
+    @Override
+    public void addInformation(Information information){
+        logger.info("A new information has been added with the date " + information.getDate() + " and the title " +  information.getTitle() + " by " + information.getSender());
+        this.session.save(information);
+    }
+
+    @Override
+    public List<Information> getInformation() {
+        List<Information> informationList = new ArrayList<>();
+        List<Object> information1 = this.session.findAll(Issue.class);
+        for (Object o : information1) {
+            Information information = (Information) o;
+            informationList.add(information);
+        }
+        logger.info("All information returned");
+        return informationList;
     }
 
     @Override

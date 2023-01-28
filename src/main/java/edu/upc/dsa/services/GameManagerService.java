@@ -8,11 +8,13 @@ import edu.upc.dsa.domain.entity.to.Coins;
 import edu.upc.dsa.domain.entity.to.PartidaCreate;
 import edu.upc.dsa.domain.entity.to.UserRegister;
 import edu.upc.dsa.domain.entity.vo.Credentials;
+import edu.upc.dsa.domain.entity.Information;
 import edu.upc.dsa.infraestructure.GameManagerDBImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.models.auth.In;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
@@ -403,6 +405,92 @@ public class GameManagerService {
     public Response getUsersByPoints() {
         List<User> users = this.gameManager.getUsersByPoints();
         GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {
+        };
+        return Response.status(200).entity(entity).build();
+    }
+
+    @POST
+    @ApiOperation(value = "add a FAQ", notes = "Adds a new FAQ and the answer")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful"),
+            @ApiResponse(code = 500, message = "Missing Information")
+    })
+    @Path("/FAQs")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addFaqs(Faqs faqs) {
+        if (faqs.getQuestion() == null || faqs.getAnswer() == null) {
+            return Response.status(500).build();
+        }
+        this.gameManager.addFaqs(faqs);
+        return Response.status(200).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get all FAQs", notes = "Gets all the FAQs that are created")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Faqs.class, responseContainer = "List"),
+    })
+    @Path("/FAQs")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFaqs() {
+        List<Faqs> faqs = this.gameManager.getFaqs();
+        GenericEntity<List<Faqs>> entity = new GenericEntity<List<Faqs>>(faqs) {
+        };
+        return Response.status(200).entity(entity).build();
+    }
+
+    @POST
+    @ApiOperation(value = "send an issue", notes = "Send Issue")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Issue.class)
+    })
+    @Path("/issue")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response sendIssue(Issue issue) {
+        this.gameManager.addIssue(issue);
+        return Response.status(200).entity(issue).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get all issues", notes = "Get Issues")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Issue.class)
+    })
+    @Path("/issue")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response getIssues() {
+        List<Issue> list = this.gameManager.getListIssues();
+        GenericEntity<List<Issue>> entity = new GenericEntity<List<Issue>>(list) {
+        };
+        return Response.status(200).entity(entity).build();
+    }
+
+    @POST
+    @ApiOperation(value = "add Information", notes = "Adds new information")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful"),
+            @ApiResponse(code = 500, message = "Missing Information")
+    })
+    @Path("/information")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addInformation(Information information) {
+        if (information.getDate() == null || information.getTitle() == null || information.getMessage() == null || information.getSender() == null) {
+            return Response.status(500).build();
+        }
+        this.gameManager.addInformation(information);
+        return Response.status(200).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get all information", notes = "Gets all the information")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = Information.class, responseContainer = "List"),
+    })
+    @Path("/information")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getInformation() {
+        List<Information> informationList = this.gameManager.getInformation();
+        GenericEntity<List<Information>> entity = new GenericEntity<List<Information>>(informationList) {
         };
         return Response.status(200).entity(entity).build();
     }
