@@ -287,7 +287,7 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public void addFaqs(Faqs faqs) {
-        logger.info("New FAQ added. Question:" + faqs.getQuestion() + " Answer: " + faqs.getAnswer());
+        logger.info("New FAQ added. Question: " + faqs.getQuestion() + " Answer: " + faqs.getAnswer());
         this.session.save(faqs);
     }
 
@@ -330,7 +330,7 @@ public class GameManagerDBImpl implements GameManager {
     @Override
     public List<Information> getInformation() {
         List<Information> informationList = new ArrayList<>();
-        List<Object> information1 = this.session.findAll(Issue.class);
+        List<Object> information1 = this.session.findAll(Information.class);
         for (Object o : information1) {
             Information information = (Information) o;
             informationList.add(information);
