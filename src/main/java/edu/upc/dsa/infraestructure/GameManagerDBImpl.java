@@ -329,4 +329,16 @@ public class GameManagerDBImpl implements GameManager {
         this.session.update(user);
         logger.info("The User with email " + user.getEmail() + " has been successfully updated");
     }
+
+    @Override
+    public List<User> getUsersByPoints() {
+        List<User> users = new ArrayList<>();
+        List<Object> usersList= this.session.userByPoints(User.class);
+        for (Object o : usersList) {
+            User user = (User) o;
+            users.add(user);
+        }
+        logger.info("All Users ordered by points");
+        return users;
+    }
 }

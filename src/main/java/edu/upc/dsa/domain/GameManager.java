@@ -20,6 +20,7 @@ public interface GameManager {
     public List<Characters> getCharactersByUser(String email);
     public List<Partida> getPartidasByUser(String email);
     public void updateUser(User user);
+    public List<User> getUsersByPoints();
 
     /**Object*/
     public void addObject(MyObjects myObject);

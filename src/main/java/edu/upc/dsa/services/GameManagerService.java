@@ -391,4 +391,19 @@ public class GameManagerService {
         this.gameManager.updateUser(user);
         return Response.status(200).build();
     }
+
+    @GET
+    @ApiOperation(value = "get Users by points", notes = "Gets all the users ordered by points")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = User.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @Path("/users/ranking")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsersByPoints() {
+        List<User> users = this.gameManager.getUsersByPoints();
+        GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {
+        };
+        return Response.status(200).entity(entity).build();
+    }
 }

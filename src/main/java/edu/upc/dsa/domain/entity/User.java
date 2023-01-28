@@ -11,6 +11,7 @@ public class User {
     int points;
     String email;
     String password;
+    String language;
     public User()
     {
 
@@ -25,6 +26,7 @@ public class User {
         this.points = 0;
         this.email = email;
         this.password = password;
+        this.language = "es";
     }
 
     public String getUserId() {
@@ -91,5 +93,13 @@ public class User {
 
     public Boolean hasEmail(String email){
         return this.email.equals(email);
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }
