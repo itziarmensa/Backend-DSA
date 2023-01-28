@@ -297,7 +297,7 @@ public class GameManagerDBImpl implements GameManager {
         List<Object> faqs1 = this.session.findAll(Faqs.class);
         for (Object o : faqs1) {
             Faqs faqs = (Faqs) o;
-            faqs1.add(faqs);
+            faqsList.add(faqs);
         }
         logger.info("All the " + faqsList.size() + " FAQs have been returned");
         return faqsList;
