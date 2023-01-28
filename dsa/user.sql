@@ -9,6 +9,7 @@ create table User
     points      int         null,
     email       varchar(50) null,
     password    varchar(50) null,
+    language    varchar(50) null,
     constraint email
         unique (email)
 );
