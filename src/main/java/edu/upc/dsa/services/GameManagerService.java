@@ -412,7 +412,7 @@ public class GameManagerService {
     @POST
     @ApiOperation(value = "add a FAQ", notes = "Adds a new FAQ and the answer")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful"),
+            @ApiResponse(code = 200, message = "Successful", response = Faqs.class),
             @ApiResponse(code = 500, message = "Missing Information")
     })
     @Path("/FAQs")
@@ -422,7 +422,7 @@ public class GameManagerService {
             return Response.status(500).build();
         }
         this.gameManager.addFaqs(faqs);
-        return Response.status(200).build();
+        return Response.status(200).entity(faqs).build();
     }
 
     @GET
@@ -454,7 +454,7 @@ public class GameManagerService {
     @GET
     @ApiOperation(value = "get all issues", notes = "Get Issues")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful", response = Issue.class)
+            @ApiResponse(code = 200, message = "Successful", response = Issue.class, responseContainer = "List")
     })
     @Path("/issue")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -468,7 +468,7 @@ public class GameManagerService {
     @POST
     @ApiOperation(value = "add Information", notes = "Adds new information")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successful"),
+            @ApiResponse(code = 200, message = "Successful", response = Information.class),
             @ApiResponse(code = 500, message = "Missing Information")
     })
     @Path("/information")
@@ -478,7 +478,7 @@ public class GameManagerService {
             return Response.status(500).build();
         }
         this.gameManager.addInformation(information);
-        return Response.status(200).build();
+        return Response.status(200).entity(information).build();
     }
 
     @GET

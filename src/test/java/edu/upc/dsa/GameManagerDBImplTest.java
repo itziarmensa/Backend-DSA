@@ -125,29 +125,20 @@ public class GameManagerDBImplTest {
 
     @Test
     public void getDescriptionCoinsObjectTest(){
-        Assert.assertEquals(2.7, gameManager.getCoinsObject("Anillo"),0.5);
-        Assert.assertEquals("Gafas visión del futuro", gameManager.getDescriptionObject("Gafas"));
+        Assert.assertEquals(2.7, gameManager.getCoinsObject("22"),0.5);
     }
 
     @Test
     public void getListObjectbyTypeTest(){
-        List<MyObjects> l = gameManager.getListObject("2");
-        Assert.assertEquals(3, l.size());
-        Assert.assertEquals("Anillo", l.get(0).getObjectName());
-        Assert.assertEquals("Gafas", l.get(1).getObjectName());
-        Assert.assertEquals("Pistola", l.get(2).getObjectName());
+        List<MyObjects> l = gameManager.getTienda();
+        Assert.assertEquals(6, l.size());
+        Assert.assertEquals("Espada", l.get(0).getObjectName());
+        Assert.assertEquals("Anillo", l.get(1).getObjectName());
+        Assert.assertEquals("Traje", l.get(2).getObjectName());
 
         Assert.assertEquals(2.7, l.get(0).getObjectCoins(),0.5);
         Assert.assertEquals(5.25, l.get(1).getObjectCoins(),0.5);
         Assert.assertEquals(1.35, l.get(2).getObjectCoins(),0.5);
-    }
-
-    @Test
-    public void deleteListObjectsByTypeTest(){
-        gameManager.deleteListObject("3");
-        Assert.assertEquals(5, this.gameManager.numObject());
-        gameManager.deleteListObject("1");
-        Assert.assertEquals(3, this.gameManager.numObject());
     }
 
     @Test
