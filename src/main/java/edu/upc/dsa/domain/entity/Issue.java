@@ -2,9 +2,9 @@ package edu.upc.dsa.domain.entity;
 
 public class Issue {
 
+    String date;
     String informer;
     String message;
-    String date;
 
     public Issue(){}
 
