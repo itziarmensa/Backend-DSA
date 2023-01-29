@@ -399,7 +399,7 @@ public class GameManagerDBImpl implements GameManager {
 
     @Override
     public User getUserByEmail(String email) {
-        logger.info("User with email " + email + "returned");
+        logger.info("User with email " + email + " returned");
         return (User) this.session.getObject(User.class, email);
     }
 }
