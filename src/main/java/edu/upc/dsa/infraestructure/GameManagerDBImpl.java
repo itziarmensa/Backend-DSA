@@ -396,4 +396,10 @@ public class GameManagerDBImpl implements GameManager {
         logger.info("All Users ordered by points");
         return users;
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        logger.info("User with email " + email + "returned");
+        return (User) this.session.getObject(User.class, email);
+    }
 }

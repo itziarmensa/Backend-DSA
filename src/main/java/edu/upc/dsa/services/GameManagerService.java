@@ -103,6 +103,22 @@ public class GameManagerService {
         return Response.status(200).entity(entity).build();
     }
 
+    @GET
+    @ApiOperation(value = "get a User from email", notes = "Gets a User from the email")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = User.class),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @Path("/user/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserByEmail(@PathParam("email") String email) {
+        User user = this.gameManager.getUserByEmail(email);
+        if (user == null) {
+            return Response.status(404).build();
+        }
+        return Response.status(200).entity(user).build();
+    }
+
     @POST
     @ApiOperation(value = "add a new Object", notes = "Adds a new object to the store")
     @ApiResponses(value = {
