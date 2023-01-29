@@ -151,10 +151,10 @@ INSERT INTO Characters VALUES ("15","Adventure Boy", "Character 15", 80);
 
 INSERT INTO Faqs VALUES ("¿Cómo se pasa el minijuego Empareja y Despeja?","Juntando parejas en horizontal, vertical o diagonal hasta que no queden cartas");
 INSERT INTO Faqs VALUES ("¿Tiene el juego alguna clase de puntuación?","Todavía no");
-INSERT INTO Faqs VALUES ("¿Cuántos minijuegos hay?","En total hay 10 minijuegos");
+INSERT INTO Faqs VALUES ("¿Cuántos minijuegos hay?","En total hay 8 minijuegos");
 INSERT INTO Faqs VALUES ("¿Cuántos personajes hay?","En total hay 15 personajes");
-INSERT INTO Faqs VALUES ("¿Cuántos minijuegos hay en cada mapa?","Hay 5 minijuegos por mapa");
+INSERT INTO Faqs VALUES ("¿Cuántos minijuegos hay en cada mapa?","Hay 4 minijuegos por mapa");
 INSERT INTO Faqs VALUES ("¿Habrá nuevos personajes?","De momento, no se ha planeado ampliar el número de personajes, pero podrían crearse más en futuras actualizaciones");
 INSERT INTO Faqs VALUES ("¿Habrá nuevos objetos?","De momento, no se ha planeado ampliar el número de objetos, pero podrían crearse más en futuras actualizaciones");
-INSERT INTO Faqs VALUES ("¿Quién ha creado el juego?","El juego está creado por 4 estudiantes de DSA de la EETAC: Anna, Itziar, Lluc, Óscar y Pau");
+INSERT INTO Faqs VALUES ("¿Quién ha creado el juego?","El juego está creado por 5 estudiantes de DSA de la EETAC: Anna, Itziar, Lluc, Óscar y Pau");
 INSERT INTO Faqs VALUES ("¿Cómo se pueden obtener monedas?","Las monedas se obtienen jugando y ganando en los distintos minijuegos");
